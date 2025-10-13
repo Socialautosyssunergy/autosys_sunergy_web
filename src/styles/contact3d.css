@@ -1,0 +1,342 @@
+/* Contact Page Premium 3D Animations and Effects */
+
+/* Floating card animations */
+@keyframes contactCardFloat {
+  0%, 100% {
+    transform: translateY(0px) rotateX(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotateX(5deg);
+  }
+}
+
+/* Contact form input focus animations */
+.contact-input-focus {
+  position: relative;
+  overflow: hidden;
+}
+
+.contact-input-focus::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s;
+}
+
+.contact-input-focus:hover::before,
+.contact-input-focus:focus-within::before {
+  left: 100%;
+}
+
+/* Premium glass morphism effect for contact cards */
+.contact-glass-card {
+  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 1px 1px rgba(255, 255, 255, 0.2);
+}
+
+.contact-glass-card-dark {
+  backdrop-filter: blur(20px);
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 1px rgba(255, 255, 255, 0.1);
+}
+
+/* Animated contact form labels */
+.contact-floating-label {
+  position: relative;
+}
+
+.contact-floating-label input,
+.contact-floating-label textarea,
+.contact-floating-label select {
+  padding-top: 1.5rem;
+}
+
+.contact-floating-label label {
+  position: absolute;
+  left: 0.75rem;
+  top: 1rem;
+  color: #6b7280;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  font-size: 1rem;
+}
+
+.contact-floating-label input:focus + label,
+.contact-floating-label textarea:focus + label,
+.contact-floating-label select:focus + label,
+.contact-floating-label input:not(:placeholder-shown) + label,
+.contact-floating-label textarea:not(:placeholder-shown) + label,
+.contact-floating-label select:not([value=""]) + label {
+  top: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #f59e0b;
+}
+
+/* Contact hero particles animation */
+.contact-particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.contact-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  animation: contactParticleFloat 6s infinite linear;
+}
+
+@keyframes contactParticleFloat {
+  0% {
+    transform: translateY(100vh) translateX(0px) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100px) translateX(100px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Contact info cards hover effects */
+.contact-info-card {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.contact-info-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transition: left 0.6s;
+}
+
+.contact-info-card:hover::before {
+  left: 100%;
+}
+
+.contact-info-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.15),
+    0 0 20px rgba(245, 158, 11, 0.1);
+}
+
+/* Contact form submission success animation */
+@keyframes contactSuccessExpand {
+  0% {
+    transform: scale(0) rotate(-180deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.contact-success-icon {
+  animation: contactSuccessExpand 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Premium contact form styling */
+.contact-form-premium {
+  position: relative;
+}
+
+.contact-form-premium::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(
+    45deg,
+    #f59e0b,
+    #fb923c,
+    #ef4444,
+    #ec4899,
+    #8b5cf6,
+    #3b82f6,
+    #06b6d4,
+    #10b981
+  );
+  background-size: 300% 300%;
+  border-radius: 1rem;
+  z-index: -1;
+  animation: contactFormGradient 6s ease infinite;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.contact-form-premium:hover::before {
+  opacity: 0.3;
+}
+
+@keyframes contactFormGradient {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Contact map integration styling */
+.contact-map-container {
+  position: relative;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.contact-map-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(245, 158, 11, 0.1) 0%,
+    rgba(251, 146, 60, 0.1) 50%,
+    rgba(239, 68, 68, 0.1) 100%
+  );
+  pointer-events: none;
+}
+
+/* Contact FAQ accordion animations */
+.contact-faq-item {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.contact-faq-item:hover {
+  transform: translateX(4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.contact-faq-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.contact-faq-content.open {
+  max-height: 200px;
+}
+
+/* Contact page responsive animations */
+@media (prefers-reduced-motion: reduce) {
+  .contact-info-card,
+  .contact-form-premium,
+  .contact-faq-item {
+    animation: none;
+    transition: none;
+  }
+  
+  .contact-particle {
+    display: none;
+  }
+}
+
+/* Dark theme specific contact animations */
+@media (prefers-color-scheme: dark) {
+  .contact-glass-card {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.4),
+      inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  }
+  
+  .contact-info-card:hover {
+    box-shadow: 
+      0 20px 40px rgba(0, 0, 0, 0.3),
+      0 0 20px rgba(59, 130, 246, 0.2);
+  }
+}
+
+/* Contact support features grid animation */
+.contact-support-grid {
+  display: grid;
+  gap: 1.5rem;
+  animation: contactSupportFadeIn 1s ease-out;
+}
+
+@keyframes contactSupportFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Contact button hover effects */
+.contact-cta-button {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.contact-cta-button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.4s, height 0.4s;
+}
+
+.contact-cta-button:hover::after {
+  width: 300px;
+  height: 300px;
+}
+
+.contact-cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}

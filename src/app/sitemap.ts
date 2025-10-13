@@ -1,0 +1,221 @@
+import { MetadataRoute } from 'next';
+import { client } from '@/lib/sanity';
+
+// Define interface for blog posts
+interface BlogPost {
+  slug: string;
+  _updatedAt?: string;
+  publishDate?: string;
+}
+
+// GROQ query to get all published blog posts with their last modified dates
+const blogPostsQuery = `
+  *[_type == "post" && defined(slug.current) && !(_id in path("drafts.**"))] {
+    "slug": slug.current,
+    publishDate,
+    _updatedAt,
+    title
+  } | order(publishDate desc)
+`;
+
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.autosyssunergy.com';
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  
+  // Static pages with SEO-optimized priorities and frequencies
+  const staticPages = [
+    {
+      url: `${baseUrl}/`,
+      lastModified: new Date(),
+      changeFrequency: 'daily' as const,
+      priority: 1.0,
+    },
+    {
+      url: `${baseUrl}/about`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/services`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/products`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/projects`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/contact`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/blog`,
+      lastModified: new Date(),
+      changeFrequency: 'daily' as const,
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/careers`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/certifications`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/csr`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/unique`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    },
+  ];
+
+  // Fetch dynamic blog posts from Sanity
+  let blogPosts: MetadataRoute.Sitemap = [];
+  try {
+    const sanityBlogPosts = await client.fetch(blogPostsQuery);
+    blogPosts = sanityBlogPosts.map((post: BlogPost) => ({
+      url: `${baseUrl}/blog/${post.slug}`,
+      lastModified: new Date(post._updatedAt || post.publishDate || new Date()),
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
+    }));
+  } catch (error) {
+    console.error('Error fetching blog posts for sitemap:', error);
+    // Fallback to static blog posts if Sanity is unavailable
+    blogPosts = [
+      {
+        url: `${baseUrl}/blog/solar-panel-technology-breakthrough-25-efficiency`,
+        lastModified: new Date('2025-01-15'),
+        changeFrequency: 'yearly' as const,
+        priority: 0.8,
+      },
+      {
+        url: `${baseUrl}/blog/government-solar-subsidies-2025-complete-guide`,
+        lastModified: new Date('2025-01-10'),
+        changeFrequency: 'monthly' as const,
+        priority: 0.9,
+      },
+      {
+        url: `${baseUrl}/blog/roi-analysis-5-years-solar-investment-indore`,
+        lastModified: new Date('2024-12-28'),
+        changeFrequency: 'yearly' as const,
+        priority: 0.8,
+      },
+    ];
+  }
+
+  // Location-based landing pages for local SEO
+  const locationPages = [
+    {
+      url: `${baseUrl}/solar-installation-indore`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/solar-panels-madhya-pradesh`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/solar-subsidy-mp`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/commercial-solar-indore`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/residential-solar-mp`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+  ];
+
+  // Product category pages
+  const productPages = [
+    {
+      url: `${baseUrl}/products/solar-panels`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/products/solar-inverters`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/products/solar-batteries`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/products/solar-accessories`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+    },
+  ];
+
+  // Service category pages
+  const servicePages = [
+    {
+      url: `${baseUrl}/services/residential-solar`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/services/commercial-solar`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/services/industrial-solar`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/services/solar-maintenance`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    },
+  ];
+
+  return [...staticPages, ...locationPages, ...blogPosts, ...productPages, ...servicePages];
+}

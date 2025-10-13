@@ -1,0 +1,42 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://autosynsunergy.com/sitemap.xml
+
+# Allow important pages
+Allow: /blog/
+Allow: /about
+Allow: /services/
+Allow: /products/
+Allow: /contact
+Allow: /projects
+
+# Block sensitive areas
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+Disallow: /studio/
+
+# Block search and filter parameters to avoid duplicate content
+Disallow: /*?*search=*
+Disallow: /*?*filter=*
+Disallow: /*?*sort=*
+
+# Crawl delay (optional, be conservative)
+Crawl-delay: 1
+
+# Specific rules for major search engines
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /

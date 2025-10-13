@@ -1,0 +1,233 @@
+/* Mobile Hero Section Optimizations */
+@media (max-width: 768px) {
+  /* Ensure hero section maintains full height on mobile */
+  .hero-section {
+    min-height: 100vh;
+    min-height: 100dvh; /* Dynamic viewport height for mobile browsers */
+    position: relative;
+  }
+
+  /* Mobile video optimizations */
+  .hero-video {
+    object-position: center center;
+    transform: scale(1.05); /* Slight zoom to prevent black bars */
+  }
+
+  /* Mobile card grid optimizations - Single Row */
+  .hero-cards-mobile {
+    padding-bottom: calc(env(safe-area-inset-bottom, 1rem) + 0.5rem);
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  /* Compact single-row card sizes */
+  .hero-card-mobile {
+    min-height: 4rem; /* Compact height for single row */
+    max-height: 4rem;
+    touch-action: manipulation;
+  }
+
+  /* Optimize text for compact mobile cards */
+  .hero-card-title-mobile {
+    font-size: clamp(0.625rem, 2vw, 0.75rem);
+    line-height: 1.1;
+  }
+
+  .hero-card-description-mobile {
+    font-size: clamp(0.5rem, 1.5vw, 0.625rem);
+    line-height: 1.2;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Mobile scroll indicator positioning for compact layout */
+  .hero-scroll-mobile {
+    bottom: 5rem; /* Adjust for compact card height */
+  }
+
+  /* Reduce motion for better mobile performance */
+  .hero-card-mobile {
+    transition: transform 0.2s ease-out;
+  }
+
+  .hero-card-mobile:active {
+    transform: scale(0.95);
+  }
+
+  /* Mobile-specific hero text optimization */
+  .hero-main-title {
+    font-size: clamp(1.875rem, 8vw, 3rem);
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+
+  .hero-main-subtitle {
+    font-size: clamp(0.875rem, 4vw, 1.125rem);
+    line-height: 1.4;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Mobile CTA buttons */
+  .hero-cta-mobile {
+    width: 100%;
+    max-width: 280px;
+    padding: 0.875rem 1.5rem;
+    font-size: 0.875rem;
+  }
+
+  /* Better touch targets for compact cards */
+  .hero-card-mobile {
+    min-height: 44px; /* Apple's minimum touch target */
+  }
+
+  /* Compact card icon sizing */
+  .hero-card-icon-mobile {
+    width: 1rem !important;
+    height: 1rem !important;
+    min-width: 1rem;
+    min-height: 1rem;
+  }
+}
+
+/* Tablet optimizations */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .hero-cards-tablet {
+    max-width: 90vw;
+  }
+
+  .hero-card-tablet {
+    height: 7rem; /* Intermediate size between mobile and desktop */
+  }
+}
+
+/* Ultra-wide mobile screens (landscape) */
+@media (max-width: 768px) and (orientation: landscape) {
+  .hero-section-landscape {
+    min-height: 100vh;
+  }
+
+  .hero-cards-landscape {
+    padding-bottom: 0.75rem;
+  }
+
+  .hero-scroll-landscape {
+    bottom: 4rem;
+  }
+
+  /* Adjust hero text for landscape */
+  .hero-main-title {
+    font-size: clamp(1.5rem, 6vw, 2.5rem);
+  }
+
+  .hero-main-subtitle {
+    font-size: clamp(0.75rem, 3vw, 1rem);
+  }
+
+  /* Compact landscape cards */
+  .hero-card-mobile {
+    min-height: 3.5rem;
+    max-height: 3.5rem;
+  }
+}
+
+/* iPhone specific optimizations */
+@media (max-width: 390px) {
+  .hero-cards-mobile {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+    gap: 0.25rem;
+  }
+
+  .hero-card-mobile {
+    min-height: 3.5rem;
+    max-height: 3.5rem;
+    padding: 0.375rem;
+  }
+
+  .hero-card-icon-mobile {
+    width: 0.875rem !important;
+    height: 0.875rem !important;
+    min-width: 0.875rem;
+    min-height: 0.875rem;
+  }
+
+  .hero-card-title-mobile {
+    font-size: 0.625rem;
+  }
+
+  .hero-card-description-mobile {
+    font-size: 0.5rem;
+  }
+
+  /* Very small screen hero text */
+  .hero-main-title {
+    font-size: 1.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .hero-main-subtitle {
+    font-size: 0.875rem;
+    margin-bottom: 1.25rem;
+  }
+
+  /* Ultra compact scroll indicator */
+  .hero-scroll-mobile {
+    bottom: 4.5rem;
+  }
+}
+
+/* Large mobile screens */
+@media (min-width: 414px) and (max-width: 768px) {
+  .hero-card-mobile {
+    min-height: 4.5rem;
+    max-height: 4.5rem;
+  }
+
+  .hero-card-title-mobile {
+    font-size: 0.75rem;
+  }
+
+  .hero-card-icon-mobile {
+    width: 1.125rem !important;
+    height: 1.125rem !important;
+  }
+}
+
+/* iOS Safari specific fixes */
+@supports (-webkit-touch-callout: none) {
+  .hero-section {
+    /* Fix for iOS Safari viewport height issues */
+    min-height: -webkit-fill-available;
+  }
+}
+
+/* Improve performance on mobile */
+@media (max-width: 768px) {
+  .hero-video,
+  .hero-card-mobile,
+  .hero-scroll-mobile {
+    will-change: transform;
+    transform: translateZ(0); /* Force hardware acceleration */
+  }
+
+  /* Reduce animation complexity on mobile */
+  .hero-card-mobile .group-hover\:opacity-20 {
+    transition-duration: 0.3s;
+  }
+
+  .hero-card-mobile .group-hover\:scale-110 {
+    transition-duration: 0.3s;
+  }
+}
+
+/* Accessibility improvements for mobile */
+@media (max-width: 768px) and (prefers-reduced-motion: reduce) {
+  .hero-card-mobile,
+  .hero-scroll-mobile * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

@@ -1,0 +1,219 @@
+/* Video Quality Optimizations for Autosys Sunergy */
+
+/* High Quality Video Rendering */
+.video-quality-high {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  transform: translateZ(0); /* Hardware acceleration */
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Video Container Optimizations */
+.video-container {
+  /* Force hardware acceleration */
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  
+  /* Optimize for video rendering */
+  will-change: transform;
+  contain: layout style paint;
+  
+  /* Prevent video compression artifacts */
+  image-rendering: -webkit-optimize-contrast;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 1000px;
+  perspective: 1000px;
+}
+
+/* Video Element Specific Optimizations */
+.optimized-video {
+  /* Hardware acceleration */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  
+  /* Force GPU rendering */
+  will-change: transform, opacity;
+  
+  /* Prevent blur during scaling */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  
+  /* Smooth transitions */
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Optimize video scaling */
+  object-fit: cover;
+  object-position: center;
+  
+  /* Prevent video distortion */
+  width: 100%;
+  height: 100%;
+  
+  /* Force high quality during transform */
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+
+/* Service Video Grid Optimizations */
+.service-video-grid {
+  /* Optimize for multiple videos */
+  contain: layout style paint;
+  
+  /* Better GPU memory management */
+  will-change: scroll-position;
+  
+  /* Smooth scrolling for video sections */
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Product Showcase Video Optimizations */
+.product-showcase-video {
+  /* Maximum quality for hero videos */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: high-quality;
+  
+  /* Hardware acceleration for full-screen videos */
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  
+  /* Force high quality scaling */
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  
+  /* Prevent quality loss during hover effects */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  
+  /* Optimize for large video containers */
+  contain: layout style paint;
+  will-change: transform, filter;
+}
+
+/* Video Loading States */
+.video-loading {
+  background: linear-gradient(45deg, #f3f4f6, #e5e7eb);
+  background-size: 400% 400%;
+  animation: videoLoadingShimmer 2s ease-in-out infinite;
+}
+
+@keyframes videoLoadingShimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Mobile Video Optimizations */
+@media (max-width: 768px) {
+  .optimized-video {
+    /* Reduce quality slightly on mobile for performance */
+    image-rendering: auto;
+    
+    /* Optimize for touch interactions */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    
+    /* Better mobile performance */
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+  }
+  
+  .product-showcase-video {
+    /* Conservative settings for mobile */
+    contain: strict;
+    will-change: auto;
+  }
+}
+
+/* Video Intersection Observer Helpers */
+.video-in-viewport {
+  /* Enhanced quality when video is visible */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: high-quality;
+  
+  /* Prioritize loading */
+  content-visibility: visible;
+}
+
+.video-out-viewport {
+  /* Reduce quality when out of view to save memory */
+  image-rendering: auto;
+  
+  /* De-prioritize loading */
+  content-visibility: hidden;
+}
+
+/* Video Hover Enhancements */
+.video-hover-enhanced:hover {
+  /* Maintain quality during hover scale */
+  image-rendering: -webkit-optimize-contrast;
+  transform: scale(1.05) translateZ(0);
+  
+  /* Smooth quality transitions */
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* High DPI Display Optimizations */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .optimized-video {
+    /* Enhanced quality for retina displays */
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    
+    /* Better scaling for high DPI */
+    -webkit-transform: translateZ(0) scale(1);
+    transform: translateZ(0) scale(1);
+  }
+}
+
+/* Video Performance Monitoring */
+.video-performance-low {
+  /* Fallback for low-performance devices */
+  image-rendering: auto;
+  will-change: auto;
+  contain: style;
+}
+
+.video-performance-high {
+  /* Enhanced settings for high-performance devices */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  will-change: transform, opacity, filter;
+  contain: layout style paint;
+}
+
+/* Video Quality Indicators */
+.video-quality-indicator {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  padding: 4px 8px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  font-size: 10px;
+  border-radius: 4px;
+  z-index: 10;
+  backdrop-filter: blur(4px);
+}
+
+/* Cinematic Video Enhancements */
+.cinematic-video {
+  /* Premium quality for cinematic sections */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: high-quality;
+  
+  /* Smooth cinematic transitions */
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  
+  /* Force maximum quality */
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  
+  /* Optimize for full-screen display */
+  contain: layout style paint;
+  will-change: transform, filter, opacity;
+}

@@ -1,0 +1,554 @@
+/* Service Detail Page Mobile Optimizations */
+
+/* Mobile specific layout optimizations */
+@media (max-width: 768px) {
+  /* Service hero section mobile optimizations */
+  .service-hero-mobile {
+    padding-top: 4rem; /* Account for header */
+    padding-bottom: 2rem;
+  }
+
+  /* Mobile image gallery optimizations */
+  .service-image-gallery-mobile {
+    border-radius: 0.75rem; /* Reduced from desktop */
+  }
+
+  .service-thumbnail-mobile {
+    border-radius: 0.5rem; /* Reduced from desktop */
+    gap: 0.5rem; /* Reduced gap for mobile */
+  }
+
+  /* Service info section mobile */
+  .service-info-mobile {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  /* Mobile title optimizations */
+  .service-title-mobile {
+    font-size: 1.5rem; /* Reduced from 2xl/3xl */
+    line-height: 1.2;
+  }
+
+  .service-subtitle-mobile {
+    font-size: 1rem; /* Reduced from lg */
+  }
+
+  /* Compact rating and stats for mobile */
+  .service-rating-mobile {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .service-rating-stars-mobile {
+    font-size: 0.875rem;
+  }
+
+  /* Mobile specs grid - 2 columns to save space */
+  .service-specs-grid-mobile {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  .service-spec-item-mobile {
+    padding: 0.75rem;
+  }
+
+  .service-spec-icon-mobile {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .service-spec-label-mobile {
+    font-size: 0.75rem;
+  }
+
+  .service-spec-value-mobile {
+    font-size: 0.875rem;
+  }
+
+  /* Mobile price request section */
+  .service-price-mobile {
+    padding: 1rem;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .service-price-title-mobile {
+    font-size: 1.25rem; /* Reduced from 2xl */
+  }
+
+  .service-price-subtitle-mobile {
+    font-size: 0.75rem; /* Reduced from sm */
+  }
+
+  .service-price-buttons-mobile {
+    width: 100%;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .service-price-button-mobile {
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  /* Mobile tab navigation */
+  .service-tabs-mobile {
+    position: sticky;
+    top: 3.5rem; /* Reduced for mobile header */
+    padding: 0.5rem;
+  }
+
+  .service-tabs-container-mobile {
+    padding: 0.25rem;
+    border-radius: 0.75rem;
+  }
+
+  .service-tab-mobile {
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
+  }
+
+  .service-tab-icon-mobile {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  /* Hide tab labels on very small screens, show only icons */
+  .service-tab-label-mobile {
+    display: none;
+  }
+
+  /* Mobile content sections */
+  .service-content-mobile {
+    padding: 1.5rem 1rem;
+  }
+
+  .service-section-title-mobile {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .service-section-subtitle-mobile {
+    font-size: 1.125rem;
+    margin-bottom: 1rem;
+  }
+
+  /* Mobile overview section */
+  .service-overview-mobile {
+    gap: 1.5rem;
+  }
+
+  .service-benefits-grid-mobile {
+    gap: 0.75rem;
+  }
+
+  .service-benefit-mobile {
+    gap: 0.75rem;
+    align-items: flex-start;
+  }
+
+  .service-benefit-icon-mobile {
+    width: 1rem;
+    height: 1rem;
+    margin-top: 0.125rem;
+  }
+
+  .service-benefit-text-mobile {
+    font-size: 0.875rem;
+  }
+
+  /* Mobile specifications table */
+  .service-specs-table-mobile {
+    padding: 1rem;
+    gap: 0.75rem;
+  }
+
+  .service-spec-row-mobile {
+    padding: 0.5rem 0;
+    font-size: 0.875rem;
+  }
+
+  /* Mobile features section */
+  .service-features-mobile {
+    gap: 1.5rem;
+  }
+
+  .service-features-grid-mobile {
+    grid-template-columns: 1fr; /* Single column for mobile */
+    gap: 1rem;
+  }
+
+  .service-feature-card-mobile {
+    padding: 1rem;
+  }
+
+  .service-feature-header-mobile {
+    gap: 0.75rem;
+  }
+
+  .service-feature-icon-container-mobile {
+    padding: 0.5rem;
+  }
+
+  .service-feature-icon-mobile {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .service-feature-title-mobile {
+    font-size: 1rem;
+  }
+
+  .service-feature-description-mobile {
+    font-size: 0.875rem;
+  }
+
+  /* Mobile process section */
+  .service-process-mobile {
+    gap: 1.5rem;
+  }
+
+  .service-process-list-mobile {
+    gap: 1rem;
+  }
+
+  .service-process-item-mobile {
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .service-process-number-mobile {
+    width: 2rem;
+    height: 2rem;
+    font-size: 0.875rem;
+  }
+
+  .service-process-content-mobile {
+    gap: 0.5rem;
+  }
+
+  .service-process-title-mobile {
+    font-size: 1rem;
+  }
+
+  .service-process-duration-mobile {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  .service-process-description-mobile {
+    font-size: 0.875rem;
+  }
+
+  /* Mobile pricing section */
+  .service-pricing-mobile {
+    gap: 1.5rem;
+  }
+
+  .service-pricing-card-mobile {
+    padding: 1.5rem;
+  }
+
+  .service-pricing-title-mobile {
+    font-size: 1.5rem;
+  }
+
+  .service-pricing-description-mobile {
+    font-size: 0.875rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .service-pricing-features-mobile {
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .service-pricing-feature-mobile {
+    padding: 0.75rem;
+  }
+
+  .service-pricing-feature-icon-mobile {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .service-pricing-feature-title-mobile {
+    font-size: 0.875rem;
+  }
+
+  .service-pricing-feature-text-mobile {
+    font-size: 0.75rem;
+  }
+
+  /* Mobile reviews section */
+  .service-reviews-mobile {
+    gap: 1.5rem;
+  }
+
+  .service-reviews-list-mobile {
+    gap: 1rem;
+  }
+
+  .service-review-mobile {
+    padding: 1rem;
+  }
+
+  .service-review-header-mobile {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .service-review-name-mobile {
+    font-size: 0.875rem;
+  }
+
+  .service-review-location-mobile {
+    font-size: 0.75rem;
+  }
+
+  .service-review-rating-mobile {
+    align-self: flex-start;
+  }
+
+  .service-review-star-mobile {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+
+  .service-review-date-mobile {
+    font-size: 0.75rem;
+  }
+
+  .service-review-comment-mobile {
+    font-size: 0.875rem;
+  }
+
+  /* Mobile FAQ section */
+  .service-faq-mobile {
+    gap: 0.75rem;
+  }
+
+  .service-faq-item-mobile {
+    padding: 1rem;
+  }
+
+  .service-faq-question-mobile {
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .service-faq-answer-mobile {
+    font-size: 0.875rem;
+  }
+
+  /* Mobile case studies */
+  .service-case-studies-mobile {
+    gap: 1rem;
+  }
+
+  .service-case-study-mobile {
+    padding: 1rem;
+  }
+
+  .service-case-study-image-mobile {
+    height: 6rem; /* Reduced from desktop */
+    margin-bottom: 0.75rem;
+  }
+
+  .service-case-study-title-mobile {
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .service-case-study-details-mobile {
+    font-size: 0.75rem;
+    gap: 0.25rem;
+  }
+
+  /* Mobile related services */
+  .service-related-mobile {
+    padding: 2rem 1rem;
+  }
+
+  .service-related-title-mobile {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .service-related-grid-mobile {
+    gap: 1rem;
+  }
+
+  .service-related-card-mobile {
+    padding: 1rem;
+  }
+
+  .service-related-card-header-mobile {
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .service-related-card-icon-mobile {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .service-related-card-title-mobile {
+    font-size: 0.875rem;
+  }
+
+  .service-related-card-description-mobile {
+    font-size: 0.75rem;
+  }
+
+  .service-related-card-footer-mobile {
+    margin-top: 0.75rem;
+    font-size: 0.875rem;
+  }
+
+  /* Mobile CTA section */
+  .service-cta-mobile {
+    padding: 3rem 1rem;
+  }
+
+  .service-cta-title-mobile {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .service-cta-description-mobile {
+    font-size: 0.875rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .service-cta-buttons-mobile {
+    gap: 1rem;
+  }
+
+  .service-cta-button-mobile {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.875rem;
+  }
+}
+
+/* Small mobile screens (iPhone SE, etc.) */
+@media (max-width: 375px) {
+  .service-tabs-container-mobile {
+    padding: 0.125rem;
+  }
+
+  .service-tab-mobile {
+    padding: 0.375rem 0.5rem;
+    font-size: 0.6875rem;
+  }
+
+  .service-tab-icon-mobile {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+
+  .service-specs-grid-mobile {
+    gap: 0.5rem;
+  }
+
+  .service-spec-item-mobile {
+    padding: 0.5rem;
+  }
+
+  .service-price-mobile {
+    padding: 0.75rem;
+  }
+
+  .service-content-mobile {
+    padding: 1rem 0.75rem;
+  }
+}
+
+/* Large mobile screens */
+@media (min-width: 414px) and (max-width: 768px) {
+  .service-tab-label-mobile {
+    display: inline; /* Show labels on larger mobile screens */
+  }
+
+  .service-features-grid-mobile {
+    grid-template-columns: 1fr 1fr; /* Two columns on larger mobile */
+    gap: 1rem;
+  }
+
+  .service-case-studies-mobile {
+    grid-template-columns: 1fr 1fr; /* Two columns for case studies */
+  }
+}
+
+/* Mobile landscape optimizations */
+@media (max-width: 768px) and (orientation: landscape) {
+  .service-hero-mobile {
+    padding-top: 3rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .service-tabs-mobile {
+    top: 3rem;
+  }
+
+  .service-features-grid-mobile {
+    grid-template-columns: 1fr 1fr; /* Two columns in landscape */
+  }
+
+  .service-process-item-mobile {
+    gap: 0.75rem;
+    padding: 0.75rem;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .service-tab-mobile:active {
+    transform: scale(0.98);
+  }
+
+  .service-price-button-mobile:active {
+    transform: scale(0.98);
+  }
+
+  .service-related-card-mobile:active {
+    transform: scale(0.98);
+  }
+
+  /* Remove hover effects on touch devices */
+  .service-related-card-mobile:hover {
+    transform: none;
+  }
+}
+
+/* Performance optimizations for mobile */
+@media (max-width: 768px) {
+  /* Use transform3d for better performance */
+  .service-tab-mobile,
+  .service-price-button-mobile,
+  .service-related-card-mobile {
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+  }
+
+  /* Reduce animation complexity on mobile */
+  .service-related-card-mobile {
+    transition: transform 0.2s ease-out;
+  }
+}
+
+/* Accessibility improvements for mobile */
+@media (max-width: 768px) and (prefers-reduced-motion: reduce) {
+  .service-tab-mobile,
+  .service-price-button-mobile,
+  .service-related-card-mobile {
+    transition: none !important;
+    animation: none !important;
+  }
+}

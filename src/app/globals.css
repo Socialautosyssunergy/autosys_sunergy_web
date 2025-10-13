@@ -1,0 +1,541 @@
+@import "tailwindcss";
+@import "../styles/animations.css";
+@import "../styles/footer.css";
+@import "../styles/premiumAnimations.css";
+@import "../styles/mobileScalingImproved.css";
+@import "../styles/serviceMobile.css";
+@import "../styles/serviceMobileOptimized.css";
+@import "../styles/bottomNavigation.css";
+
+/* Mobile Utilities */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-height-tight {
+  line-height: 1.2;
+}
+
+/* Prevent horizontal overflow globally */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* Ensure all containers don't exceed viewport width */
+.container,
+.max-w-7xl,
+.max-w-6xl,
+.max-w-5xl,
+.max-w-4xl {
+  max-width: 100vw;
+  box-sizing: border-box;
+}
+
+/* Fix for video and image containers */
+video, img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Ensure sections don't cause horizontal scroll */
+section {
+  overflow-x: hidden;
+}
+
+/* Base theme variables */
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --transition-duration: 500ms;
+}
+
+/* Day Theme - Sun-inspired Solar Energy */
+.theme-day {
+  --background: #ffffff;
+  --foreground: #1f2937;
+  --primary: #f59e0b;
+  --primary-dark: #d97706;
+  --primary-light: #fbbf24;
+  --secondary: #fb923c;
+  --accent: #ef4444;
+  --surface: #fefefe;
+  --surface-secondary: #f9fafb;
+  --surface-elevated: #ffffff;
+  --border: #e5e7eb;
+  --border-light: #f3f4f6;
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+  --gradient-primary: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #fb923c 100%);
+  --gradient-secondary: linear-gradient(135deg, #fed7aa 0%, #fdba74 50%, #fb923c 100%);
+  --gradient-bg: linear-gradient(135deg, #fffbeb 0%, #fef3c7 50%, #fed7aa 100%);
+  --gradient-hero: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(245, 158, 11, 0.1) 50%, rgba(251, 146, 60, 0.1) 100%);
+  --shadow-color: 251, 191, 36;
+  --shadow-primary: 0 10px 25px -3px rgba(251, 191, 36, 0.1), 0 4px 6px -2px rgba(251, 191, 36, 0.05);
+  --shadow-elevated: 0 25px 50px -12px rgba(251, 191, 36, 0.25);
+  --glow-color: 251, 191, 36, 0.6;
+}
+
+/* Night Theme - Futuristic Blue Tech */
+.theme-night {
+  --background: #0f172a;
+  --foreground: #e2e8f0;
+  --primary: #3b82f6;
+  --primary-dark: #1d4ed8;
+  --primary-light: #60a5fa;
+  --secondary: #06b6d4;
+  --accent: #8b5cf6;
+  --surface: #1e293b;
+  --surface-secondary: #334155;
+  --surface-elevated: #475569;
+  --border: #475569;
+  --border-light: #64748b;
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #06b6d4 50%, #8b5cf6 100%);
+  --gradient-secondary: linear-gradient(135deg, #1e40af 0%, #0891b2 50%, #7c3aed 100%);
+  --gradient-bg: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+  --gradient-hero: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(6, 182, 212, 0.1) 50%, rgba(139, 92, 246, 0.1) 100%);
+  --shadow-color: 59, 130, 246;
+  --shadow-primary: 0 10px 25px -3px rgba(59, 130, 246, 0.1), 0 4px 6px -2px rgba(59, 130, 246, 0.05);
+  --shadow-elevated: 0 25px 50px -12px rgba(59, 130, 246, 0.25);
+  --glow-color: 59, 130, 246, 0.6;
+}
+
+:root {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* Global theme transitions and base styles */
+* {
+  transition: background-color var(--transition-duration, 500ms) ease, 
+              border-color var(--transition-duration, 500ms) ease,
+              color var(--transition-duration, 500ms) ease;
+}
+
+html {
+  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* Prevent flash of wrong theme */
+html.theme-loading {
+  visibility: hidden;
+}
+
+html.theme-loading body {
+  opacity: 0;
+}
+
+/* Custom theme utilities */
+.bg-theme-surface {
+  background-color: var(--surface);
+}
+
+.bg-theme-surface-secondary {
+  background-color: var(--surface-secondary);
+}
+
+.bg-theme-surface-elevated {
+  background-color: var(--surface-elevated);
+}
+
+.bg-theme-primary {
+  background-color: var(--primary);
+}
+
+.bg-theme-primary-light {
+  background-color: var(--primary-light);
+}
+
+.bg-theme-secondary {
+  background-color: var(--secondary);
+}
+
+.bg-theme-gradient {
+  background: var(--gradient-primary);
+}
+
+.bg-theme-gradient-secondary {
+  background: var(--gradient-secondary);
+}
+
+.bg-theme-gradient-bg {
+  background: var(--gradient-bg);
+}
+
+.bg-theme-gradient-hero {
+  background: var(--gradient-hero);
+}
+
+.text-theme-primary {
+  color: var(--text-primary);
+}
+
+.text-theme-secondary {
+  color: var(--text-secondary);
+}
+
+.text-theme-muted {
+  color: var(--text-muted);
+}
+
+.border-theme {
+  border-color: var(--border);
+}
+
+.border-theme-light {
+  border-color: var(--border-light);
+}
+
+.shadow-theme {
+  box-shadow: var(--shadow-primary);
+}
+
+.shadow-theme-elevated {
+  box-shadow: var(--shadow-elevated);
+}
+
+/* Premium glass morphism effects */
+.glass-day {
+  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glass-night {
+  backdrop-filter: blur(20px);
+  background: rgba(15, 23, 42, 0.3);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+/* Theme-specific glow effects */
+.glow-theme {
+  box-shadow: 0 0 20px rgba(var(--glow-color));
+}
+
+.glow-theme-hover:hover {
+  box-shadow: 0 0 30px rgba(var(--glow-color));
+}
+
+/* Theme-specific animations */
+.theme-day .animate-sun-glow {
+  animation: sunGlow 3s ease-in-out infinite alternate;
+}
+
+.theme-night .animate-night-pulse {
+  animation: nightPulse 2s ease-in-out infinite alternate;
+}
+
+.theme-day .animate-float-day {
+  animation: floatDay 6s ease-in-out infinite;
+}
+
+.theme-night .animate-float-night {
+  animation: floatNight 8s ease-in-out infinite;
+}
+
+/* Keyframe animations */
+@keyframes sunGlow {
+  0% { 
+    box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+    transform: scale(1);
+  }
+  100% { 
+    box-shadow: 0 0 40px rgba(251, 191, 36, 0.6);
+    transform: scale(1.02);
+  }
+}
+
+@keyframes nightPulse {
+  0% { 
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+    transform: scale(1);
+  }
+  100% { 
+    box-shadow: 0 0 40px rgba(59, 130, 246, 0.6);
+    transform: scale(1.02);
+  }
+}
+
+@keyframes floatDay {
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg);
+  }
+  33% { 
+    transform: translateY(-10px) rotate(1deg);
+  }
+  66% { 
+    transform: translateY(-5px) rotate(-1deg);
+  }
+}
+
+@keyframes floatNight {
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg);
+    opacity: 0.8;
+  }
+  25% { 
+    transform: translateY(-15px) rotate(1deg);
+    opacity: 1;
+  }
+  50% { 
+    transform: translateY(-10px) rotate(0deg);
+    opacity: 0.9;
+  }
+  75% { 
+    transform: translateY(-5px) rotate(-1deg);
+    opacity: 1;
+  }
+}
+
+/* Responsive design helpers */
+@media (max-width: 768px) {
+  :root {
+    --transition-duration: 300ms;
+  }
+}
+
+/* Smooth scroll behavior for theme changes */
+html[data-theme="day"] {
+  scroll-behavior: smooth;
+}
+
+html[data-theme="night"] {
+  scroll-behavior: smooth;
+}
+
+/* Print styles */
+@media print {
+  .theme-day,
+  .theme-night {
+    --background: #ffffff;
+    --foreground: #000000;
+    --text-primary: #000000;
+    --text-secondary: #333333;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .theme-day {
+    --text-primary: #000000;
+    --text-secondary: #333333;
+    --border: #000000;
+  }
+  
+  .theme-night {
+    --text-primary: #ffffff;
+    --text-secondary: #cccccc;
+    --border: #ffffff;
+  }
+}
+
+/* Hide scrollbars for horizontal scroll */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari and Opera */
+}
+
+/* Mobile specific optimizations */
+@media (max-width: 768px) {
+  /* Compact spacing for mobile */
+  .mobile-compact {
+    padding: 0.75rem;
+  }
+  
+  .mobile-compact-sm {
+    padding: 0.5rem;
+  }
+  
+  /* Reduced gaps for mobile */
+  .mobile-gap-sm {
+    gap: 0.5rem;
+  }
+  
+  .mobile-gap {
+    gap: 0.75rem;
+  }
+  
+  /* Mobile text sizes */
+  .mobile-text-xs {
+    font-size: 0.75rem;
+    line-height: 1rem;
+  }
+  
+  .mobile-text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+  
+  .mobile-text-base {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+  
+  /* Mobile specific margins and padding */
+  .mobile-px-4 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .mobile-py-2 {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+  
+  .mobile-py-3 {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+  
+  .mobile-mb-4 {
+    margin-bottom: 1rem;
+  }
+  
+  .mobile-mb-6 {
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Mobile grid optimizations */
+  .mobile-grid-cols-1 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+  
+  .mobile-grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  
+  /* Mobile flex optimizations */
+  .mobile-flex-col {
+    flex-direction: column;
+  }
+  
+  .mobile-items-start {
+    align-items: flex-start;
+  }
+  
+  /* Mobile overflow handling */
+  .mobile-overflow-hidden {
+    overflow: hidden;
+  }
+  
+  .mobile-overflow-x-auto {
+    overflow-x: auto;
+  }
+  
+  /* Mobile touch targets */
+  .mobile-touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Mobile specific hover states (touch devices) */
+  .mobile-no-hover:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Project card enhancements */
+.project-card-gradient {
+  background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,250,252,0.9) 100%);
+}
+
+.project-card-gradient-dark {
+  background: linear-gradient(135deg, rgba(30,41,59,0.9) 0%, rgba(51,65,85,0.9) 100%);
+}
+
+.modal-backdrop {
+  backdrop-filter: blur(8px);
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Text truncation utilities */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Hover effects for project cards */
+.project-hover-scale {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-hover-scale:hover {
+  transform: translateY(-4px) scale(1.02);
+}
+
+/* Custom scrollbar for modal */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(156, 163, 175, 0.5);
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(156, 163, 175, 0.8);
+}
