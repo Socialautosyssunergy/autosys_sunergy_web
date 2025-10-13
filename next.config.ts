@@ -262,8 +262,8 @@ const nextConfig: NextConfig = {
     CUSTOM_KEY: 'my-value',
   },
 
-  // Output configuration for better caching
-  output: 'standalone',
+  // Output configuration - removed 'standalone' for Vercel deployment
+  // output: 'standalone', // Only use for Docker deployments
   
   // TypeScript configuration
   typescript: {
