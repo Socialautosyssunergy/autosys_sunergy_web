@@ -2,10 +2,21 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { client as sanityClient } from '../../../../../sanity/lib/client';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+// Dynamic route - disable static generation
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
+// Create Supabase client only when needed
+function getSupabaseClient() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  
+  if (!supabaseUrl || !supabaseKey) {
+    throw new Error('Missing Supabase environment variables');
+  }
+  
+  return createClient(supabaseUrl, supabaseKey);
+}
 
 interface SanityWebhookPayload {
   _type: string;
@@ -70,6 +81,8 @@ export async function POST(request: NextRequest) {
 }
 
 async function handleProductCategory(sanityId: string, transition: string) {
+  const supabase = getSupabaseClient();
+  
   if (transition === 'disappear') {
     // Delete category
     await supabase
@@ -129,6 +142,8 @@ async function handleProductCategory(sanityId: string, transition: string) {
 }
 
 async function handleProductBrand(sanityId: string, transition: string) {
+  const supabase = getSupabaseClient();
+  
   if (transition === 'disappear') {
     await supabase
       .from('product_brands')
@@ -185,6 +200,8 @@ async function handleProductBrand(sanityId: string, transition: string) {
 }
 
 async function handleProduct(sanityId: string, transition: string) {
+  const supabase = getSupabaseClient();
+  
   if (transition === 'disappear') {
     // Delete product and all related data
     await supabase.from('products').delete().eq('sanity_id', sanityId);
@@ -434,6 +451,8 @@ async function handleProduct(sanityId: string, transition: string) {
 }
 
 async function handleProductReview(sanityId: string, transition: string) {
+  const supabase = getSupabaseClient();
+  
   if (transition === 'disappear') {
     await supabase.from('product_reviews').delete().eq('sanity_id', sanityId);
     return;
