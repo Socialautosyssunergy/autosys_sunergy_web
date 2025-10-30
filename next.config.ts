@@ -77,52 +77,54 @@ const nextConfig: NextConfig = {
       config.externals['framer-motion'] = 'framer-motion';
     }
 
-    // Optimize bundle size
-    config.optimization = {
-      ...config.optimization,
-      splitChunks: {
-        chunks: 'all',
-        minSize: 20000,
-        maxSize: 244000,
-        cacheGroups: {
-          default: {
-            minChunks: 2,
-            priority: -20,
-            reuseExistingChunk: true,
-          },
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-            priority: -10,
-            chunks: 'all',
-          },
-          react: {
-            test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
-            name: 'react',
-            chunks: 'all',
-            priority: 20,
-          },
-          libs: {
-            test: /[\\/]node_modules[\\/](lucide-react)[\\/]/,
-            name: 'libs',
-            chunks: 'all',
-            priority: 15,
+    if (!isServer) {
+      // Optimize bundle size (client-side only to keep server manifests intact)
+      config.optimization = {
+        ...config.optimization,
+        splitChunks: {
+          chunks: 'all',
+          minSize: 20000,
+          maxSize: 244000,
+          cacheGroups: {
+            default: {
+              minChunks: 2,
+              priority: -20,
+              reuseExistingChunk: true,
+            },
+            vendor: {
+              test: /[\\/]node_modules[\\/]/,
+              name: 'vendors',
+              priority: -10,
+              chunks: 'all',
+            },
+            react: {
+              test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+              name: 'react',
+              chunks: 'all',
+              priority: 20,
+            },
+            libs: {
+              test: /[\\/]node_modules[\\/](lucide-react)[\\/]/,
+              name: 'libs',
+              chunks: 'all',
+              priority: 15,
+            },
           },
         },
-      },
-    };
+      };
 
-    // Add performance optimizations for production
-    if (!dev && !isServer) {
-      config.optimization.usedExports = true;
-      config.optimization.sideEffects = false;
-      
-      // Tree shaking improvements
-      config.optimization.providedExports = true;
-      
-      // Minimize asset sizes
-      config.optimization.moduleIds = 'deterministic';
-      config.optimization.chunkIds = 'deterministic';
+      // Add performance optimizations for client production bundles
+      if (!dev) {
+        config.optimization.usedExports = true;
+        config.optimization.sideEffects = false;
+
+        // Tree shaking improvements
+        config.optimization.providedExports = true;
+
+        // Minimize asset sizes
+        config.optimization.moduleIds = 'deterministic';
+        config.optimization.chunkIds = 'deterministic';
+      }
     }
 
     // Optimize video handling
