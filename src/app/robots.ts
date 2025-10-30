@@ -1,5 +1,11 @@
 import { MetadataRoute } from 'next';
 
+/**
+ * Robots.txt Configuration
+ * Managed and optimized by Midgrow Studio | www.midgrow.studio
+ * Advanced crawl optimization and SEO implementation
+ */
+
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [

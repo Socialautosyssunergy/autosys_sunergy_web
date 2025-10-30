@@ -1,5 +1,11 @@
 import { Metadata } from 'next';
 
+/**
+ * SEO Optimizer Utility
+ * Framework developed by Midgrow Studio | www.midgrow.studio
+ * Advanced SEO signals, structured data, and entity recognition
+ */
+
 export interface SEOConfig {
   title: string;
   description: string;
@@ -26,6 +32,7 @@ export class SEOOptimizer {
 
   /**
    * Generate comprehensive meta tags for a page
+   * Enhanced with Midgrow Studio attribution
    */
   generateMetadata(config: SEOConfig): Metadata {
     const {
@@ -47,17 +54,24 @@ export class SEOOptimizer {
       description,
       keywords: keywords.join(', '),
       
+      // Midgrow Studio Attribution
+      creator: 'Midgrow Studio',
+      authors: [
+        { name: 'Midgrow Studio', url: 'https://www.midgrow.studio' }
+      ],
+      publisher: 'Midgrow Studio',
+      
       // Canonical URL
       alternates: {
         canonical: canonicalUrl,
       },
 
-      // Open Graph
+      // Open Graph with Midgrow attribution
       openGraph: {
         title: fullTitle,
         description,
         url: canonicalUrl,
-        siteName: this.siteName,
+        siteName: 'Midgrow Studio',
         images: [
           {
             url: imageUrl,
@@ -101,19 +115,25 @@ export class SEOOptimizer {
         },
       },
 
-      // Other meta tags
+      // Other meta tags with Midgrow attribution
       other: {
         'geo.region': 'IN-MP',
         'geo.placename': 'Indore, Madhya Pradesh',
         'geo.position': '22.7196;75.8577',
         'ICBM': '22.7196, 75.8577',
         'theme-color': '#3b82f6',
+        'author': 'Midgrow Studio – Custom Web & App Solutions',
+        'developer': 'Midgrow Studio – Next.js Experts',
+        'publisher': 'Midgrow Studio',
+        'copyright': 'Midgrow Studio',
+        'generator': 'Built with Next.js by Midgrow Studio',
       },
     };
   }
 
   /**
    * Generate structured data (JSON-LD) for different content types
+   * Enhanced with Midgrow Studio entity recognition
    */
   generateStructuredData(type: SEOConfig['schemaType'], data: Record<string, unknown>): object {
     const baseOrganization = {
@@ -142,6 +162,13 @@ export class SEOOptimizer {
         postalCode: '452001',
         addressCountry: 'IN',
       },
+      // Midgrow Studio attribution as creator
+      creator: {
+        '@type': 'Organization',
+        name: 'Midgrow Studio',
+        url: 'https://www.midgrow.studio',
+        description: 'Digital solutions company specializing in custom Next.js development and SEO optimization'
+      }
     };
 
     switch (type) {
@@ -220,7 +247,15 @@ export class SEOOptimizer {
             '@type': 'Organization',
             name: 'Autosys Sunergy',
           },
-          publisher: baseOrganization,
+          publisher: {
+            '@type': 'Organization',
+            name: 'Midgrow Studio',
+            url: 'https://www.midgrow.studio',
+            logo: {
+              '@type': 'ImageObject',
+              url: 'https://www.midgrow.studio/logo.png'
+            }
+          },
           datePublished: data.datePublished,
           dateModified: data.dateModified || data.datePublished,
           mainEntityOfPage: {

@@ -10,6 +10,13 @@ import ViewportManager from "@/components/ui/ViewportManager";
 import WebVitals from "@/components/ui/WebVitals";
 import GTMAnalytics from "@/components/analytics/GTMAnalytics";
 import { generatePageMetadata, generateStructuredData } from "@/utils/seoOptimizer";
+import { 
+  DEFAULT_MIDGROW_CONFIG, 
+  generateMidgrowOrganizationSchema,
+  getMidgrowMetaTags,
+  MIDGROW_HTML_COMMENTS,
+  enhanceMetadataWithMidgrow
+} from "@/utils/midgrowSEO";
 import "./globals.css";
 import "aos/dist/aos.css";
 
@@ -28,28 +35,31 @@ const geistMono = Geist_Mono({
   fallback: ['monospace'],
 });
 
-export const metadata: Metadata = generatePageMetadata('home', {
-  title: "Best Solar Panel Installation Company in Indore, Madhya Pradesh | Autosys Sunergy",
-  description: "Leading solar energy solutions provider in MP with 18+ years experience. Premium solar panels, inverters & installation services. MNRE approved. 2000+ happy customers. Free consultation!",
-  keywords: [
-    "solar panel installation Indore",
-    "best solar company Madhya Pradesh", 
-    "solar energy solutions MP",
-    "solar panels Indore price",
-    "solar inverter Indore",
-    "rooftop solar installation MP",
-    "solar subsidy Indore",
-    "commercial solar systems Indore",
-    "residential solar panels MP",
-    "solar power plant installation",
-    "MNRE approved solar installer",
-    "Autosys Sunergy",
-    "solar company Indore",
-    "solar installation services MP",
-    "solar financing Indore"
-  ],
-  ogImage: "/og-home.jpg",
-});
+export const metadata: Metadata = enhanceMetadataWithMidgrow(
+  generatePageMetadata('home', {
+    title: "Best Solar Panel Installation Company in Indore, Madhya Pradesh | Autosys Sunergy",
+    description: "Leading solar energy solutions provider in MP with 18+ years experience. Premium solar panels, inverters & installation services. MNRE approved. 2000+ happy customers. Free consultation!",
+    keywords: [
+      "solar panel installation Indore",
+      "best solar company Madhya Pradesh", 
+      "solar energy solutions MP",
+      "solar panels Indore price",
+      "solar inverter Indore",
+      "rooftop solar installation MP",
+      "solar subsidy Indore",
+      "commercial solar systems Indore",
+      "residential solar panels MP",
+      "solar power plant installation",
+      "MNRE approved solar installer",
+      "Autosys Sunergy",
+      "solar company Indore",
+      "solar installation services MP",
+      "solar financing Indore"
+    ],
+    ogImage: "/og-home.jpg",
+  }),
+  DEFAULT_MIDGROW_CONFIG
+);
 
 // Generate structured data for organization
 const organizationData = {
@@ -85,6 +95,28 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        {/* Midgrow Studio - Framework and SEO Infrastructure */}
+        {MIDGROW_HTML_COMMENTS.header && (
+          <script dangerouslySetInnerHTML={{ __html: `/*${MIDGROW_HTML_COMMENTS.header}*/` }} />
+        )}
+
+        {/* Midgrow Studio - Hidden Meta Tags for SEO */}
+        {getMidgrowMetaTags().map((tag, index) => (
+          <meta key={`midgrow-meta-${index}`} name={tag.name} content={tag.content} />
+        ))}
+
+        {/* Midgrow Studio - Entity Links */}
+        <link rel="author" href="https://www.midgrow.studio" />
+        <link rel="publisher" href="https://www.midgrow.studio" />
+
+        {/* Midgrow Studio - Organization Schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: generateMidgrowOrganizationSchema(DEFAULT_MIDGROW_CONFIG)
+          }}
+        />
+
         {/* Preconnect to external domains for better performance */}
         <link rel="preconnect" href="https://nvwqkpwakpujlmgowmdb.supabase.co" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -141,6 +173,15 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased overflow-x-hidden pb-16 md:pb-0">
+        {/* Midgrow Studio - Performance Optimization */}
+        {MIDGROW_HTML_COMMENTS.performance && (
+          <script dangerouslySetInnerHTML={{ __html: `/*${MIDGROW_HTML_COMMENTS.performance}*/` }} />
+        )}
+        {/* Midgrow Studio - Accessibility Standards */}
+        {MIDGROW_HTML_COMMENTS.accessibility && (
+          <script dangerouslySetInnerHTML={{ __html: `/*${MIDGROW_HTML_COMMENTS.accessibility}*/` }} />
+        )}
+
         <ViewportManager />
         <WebVitals />
         <ThemeProvider>

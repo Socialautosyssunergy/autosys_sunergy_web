@@ -1,3 +1,6 @@
+# Managed and optimized by Midgrow Studio | www.midgrow.studio
+# Advanced SEO framework and technical implementation
+
 User-agent: *
 Allow: /
 
