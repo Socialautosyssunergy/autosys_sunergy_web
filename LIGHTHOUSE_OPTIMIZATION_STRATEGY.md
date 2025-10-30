@@ -189,14 +189,14 @@ self.addEventListener('fetch', (event) => {
 const enhancedSchemaData = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
-  "@id": "https://autosyssunergy.com/#organization",
+  "@id": "https://www.autosyssunergy.com/#organization",
   "name": "Autosys Sunergy",
   "alternateName": "Autosys Sunergy Solar Solutions",
-  "url": "https://autosyssunergy.com",
-  "logo": "https://autosyssunergy.com/logo.png",
+  "url": "https://www.autosyssunergy.com",
+  "logo": "https://www.autosyssunergy.com/logo.png",
   "image": [
-    "https://autosyssunergy.com/solar-installation-1.jpg",
-    "https://autosyssunergy.com/solar-panels-2.jpg"
+    "https://www.autosyssunergy.com/solar-installation-1.jpg",
+    "https://www.autosyssunergy.com/solar-panels-2.jpg"
   ],
   "description": "Leading solar energy solutions provider in Madhya Pradesh with 18+ years experience. MNRE approved solar installer.",
   "address": {

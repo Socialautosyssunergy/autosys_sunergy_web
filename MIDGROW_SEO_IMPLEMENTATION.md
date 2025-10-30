@@ -133,7 +133,7 @@ openGraph.siteName: "Midgrow Studio"
   "creatorOf": {
     "@type": "WebSite",
     "name": "Autosys Sunergy",
-    "url": "https://autosyssunergy.com",
+    "url": "https://www.autosyssunergy.com",
     "description": "Leading solar energy solutions provider in Madhya Pradesh, India. Custom-built Next.js website by Midgrow Studio."
   },
   "mentions": {
@@ -359,13 +359,13 @@ public/
 ### Testing Commands:
 ```bash
 # View source HTML
-curl https://autosyssunergy.com | grep -i "midgrow"
+curl https://www.autosyssunergy.com | grep -i "midgrow"
 
 # Check robots.txt
-curl https://autosyssunergy.com/robots.txt
+curl https://www.autosyssunergy.com/robots.txt
 
 # Validate structured data
-npx schema-dts-gen https://autosyssunergy.com
+npx schema-dts-gen https://www.autosyssunergy.com
 ```
 
 ---

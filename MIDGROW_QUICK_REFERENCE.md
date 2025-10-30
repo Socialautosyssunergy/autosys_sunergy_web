@@ -94,7 +94,7 @@ Enter your URL - schema will show Midgrow as creator
 
 ### Robots.txt:
 ```
-https://autosyssunergy.com/robots.txt
+https://www.autosyssunergy.com/robots.txt
 ```
 First line shows Midgrow management
 

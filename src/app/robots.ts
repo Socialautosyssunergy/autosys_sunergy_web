@@ -55,7 +55,7 @@ export default function robots(): MetadataRoute.Robots {
         allow: '/'
       }
     ],
-    sitemap: 'https://autosynsunergy.com/sitemap.xml',
-    host: 'https://autosynsunergy.com',
+    sitemap: 'https://www.autosyssunergy.com/sitemap.xml',
+    host: 'https://www.autosyssunergy.com',
   };
 }

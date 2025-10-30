@@ -261,6 +261,6 @@ export function enhanceMetadataWithMidgrow(baseMetadata: Metadata, _config?: Mid
  */
 export const DEFAULT_MIDGROW_CONFIG: MidgrowConfig = {
   clientName: "Autosys Sunergy",
-  clientUrl: "https://autosyssunergy.com",
+  clientUrl: "https://www.autosyssunergy.com",
   clientDescription: "Leading solar energy solutions provider in Madhya Pradesh, India. Premium solar panels, inverters & installation services with 18+ years of experience. Custom-built Next.js website by Midgrow Studio."
 };

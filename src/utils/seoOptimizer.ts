@@ -19,7 +19,7 @@ export interface SEOConfig {
 
 export class SEOOptimizer {
   private static instance: SEOOptimizer;
-  private baseUrl: string = 'https://autosyssunergy.com';
+  private baseUrl: string = 'https://www.autosyssunergy.com';
   private siteName: string = 'Autosys Sunergy';
   private defaultImage: string = '/og-default.jpg';
 

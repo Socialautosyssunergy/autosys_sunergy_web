@@ -509,7 +509,7 @@ export const generateCustomerReplyTemplate = (data: ContactFormData): EmailTempl
 
                 <div style="text-align: center; margin: 25px 0;">
                     <a href="tel:+918818880540" class="cta-button">📞 Call Now</a>
-                    <a href="https://autosyssunergy.com" class="cta-button">🌐 Visit Website</a>
+                    <a href="https://www.autosyssunergy.com" class="cta-button">🌐 Visit Website</a>
                 </div>
 
                 <p style="text-align: center; color: #6B7280; font-size: 14px; margin-top: 20px;">

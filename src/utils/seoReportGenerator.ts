@@ -24,7 +24,7 @@ interface PageSEOReport {
 export class SEOReportGenerator {
   private baseUrl: string;
   
-  constructor(baseUrl: string = 'https://autosyssunergy.com') {
+  constructor(baseUrl: string = 'https://www.autosyssunergy.com') {
     this.baseUrl = baseUrl;
   }
 

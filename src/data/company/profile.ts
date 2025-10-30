@@ -8,7 +8,7 @@ export const companyProfile = {
   contact: {
     phone: "+91 8818880540",
     email: "info@autosysindore.com",
-    website: "autosyssunergy.com",
+    website: "www.autosyssunergy.com",
     alternateWebsite: "autosyssolar.com"
   },
   
