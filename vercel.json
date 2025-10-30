@@ -1,10 +1,7 @@
 {
-  "version": 2,
-  "buildCommand": "npm run build",
-  "framework": "nextjs",
   "regions": ["bom1"],
   "env": {
-    "NEXT_PUBLIC_SITE_URL": "https://autosyssunergy.com"
+    "NEXT_PUBLIC_SITE_URL": "https://www.autosyssunergy.com"
   },
   "build": {
     "env": {
