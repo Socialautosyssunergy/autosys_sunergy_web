@@ -1,14 +1,103 @@
-import { supabase, createSupabaseServiceClient } from '@/lib/supabase';
-import { Database } from '@/types/database';
-import { sendNotificationEmail, ContactFormData, ProductInquiryData, ServiceInquiryData } from './emailService';
+/**
+ * Supabase Utilities - FORMS & LEAD CAPTURE ONLY
+ * 
+ * ⚠️ IMPORTANT: Supabase is used EXCLUSIVELY for:
+ * - Contact form submissions
+ * - Product inquiry forms
+ * - Service inquiry forms
+ * - Lead capture popups
+ * 
+ * Products, services, and other content use static data files.
+ * Blogs use Sanity CMS.
+ */
 
-export type Product = Database['public']['Tables']['products']['Row'];
-export type Service = Database['public']['Tables']['services']['Row'];
-export type BlogPost = Database['public']['Tables']['blog_posts']['Row'];
-export type Project = Database['public']['Tables']['projects']['Row'];
-export type ContactSubmission = Database['public']['Tables']['contact_submissions']['Row'];
-export type ProductInquiry = Database['public']['Tables']['product_inquiries']['Row'];
-export type ServiceInquiry = Database['public']['Tables']['service_inquiries']['Row'];
+import { createSupabaseServiceClient } from '@/lib/supabase';
+import { sendNotificationEmail, ContactFormData, ProductInquiryData, ServiceInquiryData } from './emailService';
+import { sendResendTeamNotification } from './resendService';
+
+// Form submission types
+export interface ContactSubmission {
+  id?: string;
+  name: string;
+  email: string;
+  phone?: string;
+  company?: string;
+  form_type?: string;
+  user_type?: string;
+  subject?: string;
+  message: string;
+  location?: string;
+  system_type?: string;
+  monthly_bill?: string;
+  business_type?: string;
+  power_consumption?: string;
+  industrial_scale?: string;
+  source?: string;
+  priority?: string;
+  status?: string;
+  metadata?: Record<string, unknown>;
+  ip_address?: string;
+  user_agent?: string;
+  referer?: string;
+  email_sent?: boolean;
+  email_sent_at?: string;
+  email_error?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface ProductInquiry {
+  id?: string;
+  name: string;
+  email: string;
+  phone?: string;
+  company?: string;
+  product_name: string;
+  product_category?: string;
+  quantity_required?: string;
+  budget_range?: string;
+  timeline?: string;
+  message?: string;
+  location?: string;
+  specifications?: string;
+  priority?: string;
+  status?: string;
+  source?: string;
+  metadata?: Record<string, unknown>;
+  ip_address?: string;
+  email_sent?: boolean;
+  email_sent_at?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface ServiceInquiry {
+  id?: string;
+  name: string;
+  email: string;
+  phone?: string;
+  company?: string;
+  service_name: string;
+  service_category?: string;
+  service_type?: string;
+  project_timeline?: string;
+  budget_range?: string;
+  property_type?: string;
+  property_size?: string;
+  current_monthly_bill?: string;
+  message?: string;
+  location?: string;
+  special_requirements?: string;
+  priority?: string;
+  status?: string;
+  source?: string;
+  metadata?: Record<string, unknown>;
+  ip_address?: string;
+  email_sent?: boolean;
+  email_sent_at?: string;
+  created_at?: string;
+  updated_at?: string;
+}
 
 // Helper function to get client IP from request headers
 export const getClientIP = (headers: Headers): string => {
@@ -25,208 +114,14 @@ export const getClientIP = (headers: Headers): string => {
   return '127.0.0.1';
 };
 
-// Product Operations
-export const getProducts = async (category?: string) => {
-  if (!supabase) {
-    console.warn('Supabase not configured');
-    return [];
-  }
-  
-  let query = supabase.from('products').select('*');
-  
-  if (category) {
-    query = query.eq('category', category);
-  }
-  
-  const { data, error } = await query.order('created_at', { ascending: false });
-  
-  if (error) {
-    console.error('Error fetching products:', error);
-    return [];
-  }
-  
-  return data as Product[];
-};
+// ============================================================================
+// FORM SUBMISSION FUNCTIONS (ONLY USE OF SUPABASE)
+// ============================================================================
 
-export const getProductById = async (id: string) => {
-  if (!supabase) {
-    console.warn('Supabase not configured');
-    return null;
-  }
-  
-  const { data, error } = await supabase
-    .from('products')
-    .select('*')
-    .eq('id', id)
-    .single();
-  
-  if (error) {
-    console.error('Error fetching product:', error);
-    return null;
-  }
-  
-  return data as Product;
-};
-
-export const searchProducts = async (query: string) => {
-  if (!supabase) {
-    console.warn('Supabase not configured');
-    return [];
-  }
-  
-  const { data, error } = await supabase
-    .from('products')
-    .select('*')
-    .or(`title.ilike.%${query}%,description.ilike.%${query}%,brand.ilike.%${query}%`)
-    .order('created_at', { ascending: false });
-  
-  if (error) {
-    console.error('Error searching products:', error);
-    return [];
-  }
-  
-  return data as Product[];
-};
-
-// Service Operations
-export const getServices = async (category?: string) => {
-  if (!supabase) {
-    console.warn('Supabase not configured');
-    return [];
-  }
-  
-  let query = supabase.from('services').select('*');
-  
-  if (category) {
-    query = query.eq('category', category);
-  }
-  
-  const { data, error } = await query.order('created_at', { ascending: false });
-  
-  if (error) {
-    console.error('Error fetching services:', error);
-    return [];
-  }
-  
-  return data as Service[];
-};
-
-export const getServiceById = async (id: string) => {
-  if (!supabase) {
-    console.warn('Supabase not configured');
-    return null;
-  }
-  
-  const { data, error } = await supabase
-    .from('services')
-    .select('*')
-    .eq('id', id)
-    .single();
-  
-  if (error) {
-    console.error('Error fetching service:', error);
-    return null;
-  }
-  
-  return data as Service;
-};
-
-// Blog Operations
-export const getBlogPosts = async (published: boolean = true) => {
-  if (!supabase) {
-    console.warn('Supabase not configured');
-    return [];
-  }
-  
-  const { data, error } = await supabase
-    .from('blog_posts')
-    .select('*')
-    .eq('published', published)
-    .order('created_at', { ascending: false });
-  
-  if (error) {
-    console.error('Error fetching blog posts:', error);
-    return [];
-  }
-  
-  return data as BlogPost[];
-};
-
-export const getBlogPostBySlug = async (slug: string) => {
-  if (!supabase) {
-    console.warn('Supabase not configured');
-    return null;
-  }
-  
-  const { data, error } = await supabase
-    .from('blog_posts')
-    .select('*')
-    .eq('slug', slug)
-    .eq('published', true)
-    .single();
-  
-  if (error) {
-    console.error('Error fetching blog post:', error);
-    return null;
-  }
-  
-  // Increment view count
-  const { error: updateError } = await supabase
-    .from('blog_posts')
-    .update({ views: data.views + 1 })
-    .eq('id', data.id);
-  
-  if (updateError) {
-    console.error('Error updating view count:', updateError);
-  }
-  
-  return data as BlogPost;
-};
-
-// Project Operations
-export const getProjects = async (category?: string) => {
-  if (!supabase) {
-    console.warn('Supabase not configured');
-    return [];
-  }
-  
-  let query = supabase.from('projects').select('*');
-  
-  if (category) {
-    query = query.eq('category', category);
-  }
-  
-  const { data, error } = await query.order('created_at', { ascending: false });
-  
-  if (error) {
-    console.error('Error fetching projects:', error);
-    return [];
-  }
-  
-  return data as Project[];
-};
-
-export const getProjectById = async (id: string) => {
-  if (!supabase) {
-    console.warn('Supabase not configured');
-    return null;
-  }
-  
-  const { data, error } = await supabase
-    .from('projects')
-    .select('*')
-    .eq('id', id)
-    .single();
-  
-  if (error) {
-    console.error('Error fetching project:', error);
-    return null;
-  }
-  
-  return data as Project;
-};
-
-// Enhanced Contact Operations with Email Notifications
+/**
+ * Submit Contact Form
+ * Saves form submission to Supabase and sends email notifications
+ */
 export const submitContactForm = async (
   formData: ContactFormData & {
     ip_address?: string;
@@ -234,14 +129,17 @@ export const submitContactForm = async (
     referer?: string;
   }
 ) => {
-  if (!supabase) {
+  // Use service role client to bypass RLS for public form submissions
+  const supabaseService = createSupabaseServiceClient();
+  
+  if (!supabaseService) {
     console.warn('Supabase not configured');
     throw new Error('Database not available');
   }
   
   try {
-    // Insert contact submission
-    const { data, error } = await supabase
+    // Insert contact submission using service role (bypasses RLS)
+    const { data, error } = await supabaseService
       .from('contact_submissions')
       .insert([{
         name: formData.name,
@@ -275,29 +173,40 @@ export const submitContactForm = async (
       throw new Error('Failed to submit contact form');
     }
 
-    // Send email notification in background
-    sendNotificationEmail('contact', formData)
-      .then(async (emailResult) => {
-        if (emailResult.success && supabase) {
+    // Send email notification in background (try Resend first, fallback to Zoho)
+    (async () => {
+      try {
+        console.log('📧 Attempting to send team notification via Resend...');
+        let emailResult = await sendResendTeamNotification(formData as ContactFormData);
+        
+        // If Resend fails or is not configured, fallback to Zoho
+        if (!emailResult.success) {
+          console.log('⚠️ Resend failed, falling back to Zoho SMTP...');
+          emailResult = await sendNotificationEmail('contact', formData);
+        }
+        
+        if (emailResult.success && supabaseService) {
           // Update submission with email sent status
-          await supabase
+          await supabaseService
             .from('contact_submissions')
             .update({
               email_sent: true,
               email_sent_at: new Date().toISOString()
             })
             .eq('id', data.id);
-        } else if (supabase) {
+        } else if (supabaseService) {
           // Update submission with email error
-          await supabase
+          await supabaseService
             .from('contact_submissions')
             .update({
               email_error: emailResult.error
             })
             .eq('id', data.id);
         }
-      })
-      .catch(console.error);
+      } catch (err) {
+        console.error('Email notification error:', err);
+      }
+    })();
     
     return data as ContactSubmission;
   } catch (error) {
@@ -314,14 +223,17 @@ export const submitProductInquiry = async (
     referer?: string;
   }
 ) => {
-  if (!supabase) {
+  // Use service role client to bypass RLS for public form submissions
+  const supabaseService = createSupabaseServiceClient();
+  
+  if (!supabaseService) {
     console.warn('Supabase not configured');
     throw new Error('Database not available');
   }
   
   try {
-    // Insert product inquiry
-    const { data, error } = await supabase
+    // Insert product inquiry using service role (bypasses RLS)
+    const { data, error } = await supabaseService
       .from('product_inquiries')
       .insert([{
         name: inquiryData.name,
@@ -351,11 +263,33 @@ export const submitProductInquiry = async (
       throw new Error('Failed to submit product inquiry');
     }
 
-    // Send email notification in background
-    sendNotificationEmail('product', inquiryData)
-      .then(async (emailResult) => {
-        if (emailResult.success && supabase) {
-          await supabase
+    // Send email notification in background (try Resend first, fallback to Zoho)
+    (async () => {
+      try {
+        // Convert product inquiry to contact form format for email template
+        const emailData: ContactFormData = {
+          name: inquiryData.name,
+          email: inquiryData.email,
+          phone: inquiryData.phone,
+          company: inquiryData.company,
+          subject: `Product Inquiry: ${inquiryData.product_name}`,
+          message: `${inquiryData.message}\n\n--- Product Details ---\nProduct: ${inquiryData.product_name}\nCategory: ${inquiryData.product_category || 'Not specified'}\nQuantity: ${inquiryData.quantity_required || 'Not specified'}\nBudget: ${inquiryData.budget_range || 'Not specified'}\nTimeline: ${inquiryData.timeline || 'Not specified'}\nLocation: ${inquiryData.location || 'Not specified'}\nSpecifications: ${inquiryData.specifications || 'Not specified'}`,
+          form_type: 'product_inquiry',
+          source: 'product_inquiry',
+          metadata: inquiryData.metadata
+        };
+        
+        console.log('📧 Attempting to send product inquiry via Resend...');
+        let emailResult = await sendResendTeamNotification(emailData);
+        
+        // If Resend fails or is not configured, fallback to Zoho
+        if (!emailResult.success) {
+          console.log('⚠️ Resend failed, falling back to Zoho SMTP...');
+          emailResult = await sendNotificationEmail('product', inquiryData);
+        }
+        
+        if (emailResult.success && supabaseService) {
+          await supabaseService
             .from('product_inquiries')
             .update({
               email_sent: true,
@@ -363,8 +297,10 @@ export const submitProductInquiry = async (
             })
             .eq('id', data.id);
         }
-      })
-      .catch(console.error);
+      } catch (err) {
+        console.error('Email notification error:', err);
+      }
+    })();
     
     return data as ProductInquiry;
   } catch (error) {
@@ -381,14 +317,17 @@ export const submitServiceInquiry = async (
     referer?: string;
   }
 ) => {
-  if (!supabase) {
+  // Use service role client to bypass RLS for public form submissions
+  const supabaseService = createSupabaseServiceClient();
+  
+  if (!supabaseService) {
     console.warn('Supabase not configured');
     throw new Error('Database not available');
   }
   
   try {
-    // Insert service inquiry
-    const { data, error } = await supabase
+    // Insert service inquiry using service role (bypasses RLS)
+    const { data, error } = await supabaseService
       .from('service_inquiries')
       .insert([{
         name: inquiryData.name,
@@ -421,11 +360,33 @@ export const submitServiceInquiry = async (
       throw new Error('Failed to submit service inquiry');
     }
 
-    // Send email notification in background
-    sendNotificationEmail('service', inquiryData)
-      .then(async (emailResult) => {
-        if (emailResult.success && supabase) {
-          await supabase
+    // Send email notification in background (try Resend first, fallback to Zoho)
+    (async () => {
+      try {
+        // Convert service inquiry to contact form format for email template
+        const emailData: ContactFormData = {
+          name: inquiryData.name,
+          email: inquiryData.email,
+          phone: inquiryData.phone,
+          company: inquiryData.company,
+          subject: `Service Inquiry: ${inquiryData.service_name}`,
+          message: `${inquiryData.message}\n\n--- Service Details ---\nService: ${inquiryData.service_name}\nCategory: ${inquiryData.service_category || 'Not specified'}\nType: ${inquiryData.service_type || 'Not specified'}\nTimeline: ${inquiryData.project_timeline || 'Not specified'}\nBudget: ${inquiryData.budget_range || 'Not specified'}\nProperty Type: ${inquiryData.property_type || 'Not specified'}\nProperty Size: ${inquiryData.property_size || 'Not specified'}\nCurrent Bill: ${inquiryData.current_monthly_bill || 'Not specified'}\nLocation: ${inquiryData.location || 'Not specified'}\nSpecial Requirements: ${inquiryData.special_requirements || 'Not specified'}`,
+          form_type: 'service_inquiry',
+          source: 'service_inquiry',
+          metadata: inquiryData.metadata
+        };
+        
+        console.log('📧 Attempting to send service inquiry via Resend...');
+        let emailResult = await sendResendTeamNotification(emailData);
+        
+        // If Resend fails or is not configured, fallback to Zoho
+        if (!emailResult.success) {
+          console.log('⚠️ Resend failed, falling back to Zoho SMTP...');
+          emailResult = await sendNotificationEmail('service', inquiryData);
+        }
+        
+        if (emailResult.success && supabaseService) {
+          await supabaseService
             .from('service_inquiries')
             .update({
               email_sent: true,
@@ -433,8 +394,10 @@ export const submitServiceInquiry = async (
             })
             .eq('id', data.id);
         }
-      })
-      .catch(console.error);
+      } catch (err) {
+        console.error('Email notification error:', err);
+      }
+    })();
     
     return data as ServiceInquiry;
   } catch (error) {

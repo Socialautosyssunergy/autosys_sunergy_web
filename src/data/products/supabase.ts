@@ -1,4 +1,4 @@
-import supabase, { 
+import { 
   getProducts, 
   getProductBySlug,
   getProductCategories as fetchProductCategories,
@@ -20,14 +20,16 @@ import {
   transformReviewForLegacy
 } from '@/types/product';
 
-// Create Supabase client for direct queries
-const supabaseClient = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
-
 // Import Lucide icons for categories
 import { Zap, Cpu, Battery, Wrench, Cable, Monitor, Package } from 'lucide-react';
+
+// Create Supabase client for direct queries
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+
+const supabaseClient = supabaseUrl && supabaseAnonKey
+  ? createClient(supabaseUrl, supabaseAnonKey)
+  : null;
 
 // Icon mapping for categories
 const categoryIcons: { [key: string]: React.ComponentType } = {
@@ -283,6 +285,11 @@ export const getProductById = async (id: string): Promise<any | undefined> => {
       product = await getProductBySlug(id);
     } else {
       // Likely a UUID, fetch by ID directly
+      if (!supabaseClient) {
+        console.warn('Supabase not configured');
+        return undefined;
+      }
+      
       const { data, error } = await supabaseClient
         .from('products')
         .select(`

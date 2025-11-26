@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
-import { getBlogPosts } from '@/utils/supabaseUtils';
+import { client, blogPostsQuery } from '@/lib/sanity';
 
 export async function GET() {
   try {
-    const posts = await getBlogPosts(true);
+    const posts = await client.fetch(blogPostsQuery);
     
     return NextResponse.json({ posts });
     

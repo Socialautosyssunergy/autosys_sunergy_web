@@ -50,42 +50,7 @@ import {
   sortProducts,
   filterProducts
 } from '@/data/products';
-
-interface Product {
-  id: string;
-  title: string;
-  shortDesc: string;
-  description: string;
-  category: 'solar-panels' | 'inverters' | 'batteries' | 'mounting' | 'accessories' | 'monitoring';
-  subcategory: string;
-  brand: string;
-  model: string;
-  specifications: {
-    [key: string]: string;
-  };
-  features: string[];
-  moq: string;
-  warranty: string;
-  efficiency?: string;
-  capacity?: string;
-  image: string;
-  images: string[];
-  icon: React.ComponentType<{ className?: string }> | null;
-  rating: number;
-  reviews: number;
-  isPopular?: boolean;
-  isFeatured?: boolean;
-  inStock: boolean;
-  leadTime: string;
-  certifications: string[];
-  applications: string[];
-  compatibleWith?: string[];
-  technicalDocs: {
-    datasheet?: string;
-    manual?: string;
-    certifications?: string;
-  };
-}
+import { Product, ProductCategory } from '@/data/products/types';
 
 interface ProductTestimonial {
   id: number;
@@ -97,16 +62,6 @@ interface ProductTestimonial {
   rating: number;
   date: string;
   avatar: string;
-}
-
-interface ProductCategory {
-  id: string;
-  label: string;
-  icon: React.ComponentType<{ className?: string }>;
-  description: string;
-  features: string[];
-  mainProducts: Product[];
-  totalProducts: number;
 }
 
 const ProductsPage = () => {

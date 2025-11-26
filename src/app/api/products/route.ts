@@ -1,25 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-
-// Dynamic import to avoid build-time issues
-const getProductsFunction = async (category?: string) => {
-  try {
-    const { getProducts } = await import('@/utils/supabaseUtils');
-    return await getProducts(category);
-  } catch (error) {
-    console.error('Error loading products function:', error);
-    return [];
-  }
-};
-
-const searchProductsFunction = async (query: string) => {
-  try {
-    const { searchProducts } = await import('@/utils/supabaseUtils');
-    return await searchProducts(query);
-  } catch (error) {
-    console.error('Error loading search function:', error);
-    return [];
-  }
-};
+import { getAllProducts, getProductsByCategory, searchProducts } from '@/data/products';
 
 export async function GET(request: NextRequest) {
   try {
@@ -30,9 +10,11 @@ export async function GET(request: NextRequest) {
     let products;
     
     if (query) {
-      products = await searchProductsFunction(query);
+      products = searchProducts(query);
+    } else if (category) {
+      products = getProductsByCategory(category);
     } else {
-      products = await getProductsFunction(category || undefined);
+      products = await getAllProducts();
     }
     
     return NextResponse.json({ products });

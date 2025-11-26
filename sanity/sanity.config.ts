@@ -6,9 +6,22 @@ import {autoFillPlugin} from './plugins/autoFill'
 // Import all schemas from index
 import {schemaTypes} from './schemas'
 
+/**
+ * Sanity CMS Configuration - BLOG/SEO ONLY
+ * 
+ * ⚠️ IMPORTANT: Sanity is now used EXCLUSIVELY for blog content management
+ * 
+ * Content Management:
+ * - ✅ Blog Posts (via Sanity) - For SEO and content marketing
+ * - ✅ Blog Categories (via Sanity)
+ * - ✅ Blog Authors (via Sanity)
+ * - ❌ Products (via Supabase) - All product data managed in Supabase
+ * - ❌ Services (via Supabase) - All service data managed in Supabase
+ * - ❌ Projects (via Supabase) - All project data managed in Supabase
+ */
 export default defineConfig({
   name: 'default',
-  title: 'AutoSys Sunergy CMS',
+  title: 'AutoSys Sunergy CMS - Blog Management',
 
   projectId: 'qepvii24',
   dataset: 'production',
@@ -19,53 +32,19 @@ export default defineConfig({
         S.list()
           .title('Content')
           .items([
-            // Blog Section
+            // Blog Section (ONLY content type in Sanity)
             S.listItem()
-              .title('Blog')
-              .child(
-                S.list()
-                  .title('Blog Management')
-                  .items([
-                    S.listItem()
-                      .title('Posts')
-                      .schemaType('post')
-                      .child(S.documentTypeList('post')),
-                    S.listItem()
-                      .title('Categories')
-                      .schemaType('category')
-                      .child(S.documentTypeList('category')),
-                    S.listItem()
-                      .title('Authors')
-                      .schemaType('author')
-                      .child(S.documentTypeList('author')),
-                  ])
-              ),
-            
-            // Product Section
+              .title('📝 Blog Posts')
+              .schemaType('post')
+              .child(S.documentTypeList('post')),
             S.listItem()
-              .title('Products')
-              .child(
-                S.list()
-                  .title('Product Management')
-                  .items([
-                    S.listItem()
-                      .title('Products')
-                      .schemaType('product')
-                      .child(S.documentTypeList('product')),
-                    S.listItem()
-                      .title('Categories')
-                      .schemaType('productCategory')
-                      .child(S.documentTypeList('productCategory')),
-                    S.listItem()
-                      .title('Brands')
-                      .schemaType('productBrand')
-                      .child(S.documentTypeList('productBrand')),
-                    S.listItem()
-                      .title('Reviews')
-                      .schemaType('productReview')
-                      .child(S.documentTypeList('productReview')),
-                  ])
-              ),
+              .title('📁 Blog Categories')
+              .schemaType('category')
+              .child(S.documentTypeList('category')),
+            S.listItem()
+              .title('✍️ Blog Authors')
+              .schemaType('author')
+              .child(S.documentTypeList('author')),
           ])
     }),
     codeInput(),

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '@/contexts/ThemeContext';
 import { getThemeClasses, getThemeHover, TRANSITION_CLASSES } from '@/utils/themeUtils';
-import { Product } from '@/types/product';
+import { Product } from '@/data/products/types';
 import { 
   ArrowLeft,
   Home, 
@@ -222,7 +222,7 @@ export default function ProductDetailPage() {
                 {/* Main Image */}
                 <div className="relative aspect-video rounded-lg md:rounded-2xl overflow-hidden flex-shrink-0">
                   <img 
-                    src={product.images?.[selectedImage]?.image_url || ''} 
+                    src={product.images?.[selectedImage] || ''} 
                     alt={product.title}
                     className="w-full h-full object-cover"
                   />
@@ -233,13 +233,13 @@ export default function ProductDetailPage() {
                   }`}></div>
                   
                   {/* Badge */}
-                  {(product.is_popular || product.is_featured) && (
+                  {(product.isPopular || product.isFeatured) && (
                     <div className={`absolute top-2 md:top-4 right-2 md:right-4 px-2 md:px-3 py-1 rounded-full text-xs font-bold ${
-                      product.is_popular 
+                      product.isPopular 
                         ? 'bg-green-500 text-white' 
                         : 'bg-purple-500 text-white'
                     }`}>
-                      {product.is_popular ? 'POPULAR' : 'FEATURED'}
+                      {product.isPopular ? 'POPULAR' : 'FEATURED'}
                     </div>
                   )}    
                 </div>
@@ -263,7 +263,7 @@ export default function ProductDetailPage() {
                           }`}
                         >
                           <img 
-                            src={product.images?.[0]?.image_url || ''} 
+                            src={product.images?.[0] || ''} 
                             alt={`${product.title} 1`}
                             className="w-full h-full object-cover"
                           />
@@ -271,8 +271,8 @@ export default function ProductDetailPage() {
                       );
                       
                       // Second item: video if available, otherwise second image
-                      if (product.videos && product.videos.length > 0 && product.videos[0].youtube_url) {
-                        const videoId = getYouTubeVideoId(product.videos[0].youtube_url);
+                      if (product.media?.youtubeVideoUrl) {
+                        const videoId = getYouTubeVideoId(product.media.youtubeVideoUrl);
                         displayItems.push(
                           <button
                             key="video"
@@ -329,7 +329,7 @@ export default function ProductDetailPage() {
                             }`}
                           >
                             <img 
-                              src={product.images[1]?.image_url || ''} 
+                              src={product.images[1] || ''} 
                               alt={`${product.title} 2`}
                               className="w-full h-full object-cover"
                             />
@@ -346,7 +346,7 @@ export default function ProductDetailPage() {
                             className={`relative aspect-video rounded-sm sm:rounded md:rounded-lg overflow-hidden border-2 transition-all border-transparent hover:border-blue-500`}
                           >
                             <img 
-                              src={product.images[2]?.image_url || ''} 
+                              src={product.images[2] || ''} 
                               alt={`${product.title} 3`}
                               className="w-full h-full object-cover"
                             />
@@ -370,7 +370,7 @@ export default function ProductDetailPage() {
                             }`}
                           >
                             <img 
-                              src={product.images[2]?.image_url || ''} 
+                              src={product.images[2] || ''} 
                               alt={`${product.title} 3`}
                               className="w-full h-full object-cover"
                             />
@@ -405,7 +405,7 @@ export default function ProductDetailPage() {
                         <p className={`text-xs md:text-base ${
                           isDay ? 'text-amber-600' : 'text-blue-400'
                         }`}>
-                          {product.brand?.name} - {product.model}
+                          {product.brand} - {product.model}
                         </p>
                       </div>
                     </div>
@@ -413,7 +413,7 @@ export default function ProductDetailPage() {
                     <p className={`text-xs md:text-sm leading-tight ${
                       isDay ? 'text-slate-600' : 'text-slate-300'
                     } line-clamp-2`}>
-                      {product.short_description || product.description}
+                      {product.shortDesc || product.description}
                     </p>
                   </div>
 
@@ -440,7 +440,7 @@ export default function ProductDetailPage() {
                       <span className={`text-[10px] md:text-xs ${
                         isDay ? 'text-slate-500' : 'text-slate-400'
                       }`}>
-                        ({product.review_count})
+                        ({product.reviews})
                       </span>
                     </div>
                     
@@ -469,7 +469,7 @@ export default function ProductDetailPage() {
     { label: 'Capacity', value: product.capacity || 'N/A', icon: TrendingUp },
     { label: 'Efficiency', value: product.efficiency || 'N/A', icon: Zap },
     { label: 'Warranty', value: product.warranty, icon: Shield },
-    { label: 'Lead Time', value: product.lead_time, icon: Clock }
+    { label: 'Lead Time', value: product.leadTime, icon: Clock }
                     ].map((spec, index) => (
                       <div key={index} className={`p-0.5 md:p-2 rounded md:rounded-lg border ${
                         isDay 
@@ -498,7 +498,7 @@ export default function ProductDetailPage() {
                   </div>
 
                   {/* Downloadable Documents - Balanced */}
-                  {product.documents && product.documents.length > 0 && (
+                  {product.technicalDocs && (product.technicalDocs.datasheet || product.technicalDocs.manual) && (
                     <div className={`p-1 md:p-2 rounded md:rounded-lg border ${
                       isDay 
                         ? 'bg-white/55 border-amber-200' 
@@ -515,11 +515,10 @@ export default function ProductDetailPage() {
                         </div>
                       </div>
                       <div className="grid grid-cols-4 gap-0.5 md:gap-1.5">
-                        {product.documents.map((doc, index) => (
+                        {product.technicalDocs.datasheet && (
                           <a
-                            key={index}
-                            href={doc.file_url}
-                            download={doc.title}
+                            href={product.technicalDocs.datasheet}
+                            download="Datasheet"
                             target="_blank"
                             rel="noopener noreferrer"
                             className={`flex flex-col items-center gap-0.5 md:gap-1 p-1 md:p-2 rounded border transition-all hover:scale-[1.02] ${
@@ -534,10 +533,32 @@ export default function ProductDetailPage() {
                             <span className={`text-[7px] md:text-[10px] font-medium text-center leading-tight ${
                               isDay ? 'text-slate-700' : 'text-slate-300'
                             }`}>
-                              {doc.title}
+                              Datasheet
                             </span>
                           </a>
-                        ))}
+                        )}
+                        {product.technicalDocs.manual && (
+                          <a
+                            href={product.technicalDocs.manual}
+                            download="Manual"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={`flex flex-col items-center gap-0.5 md:gap-1 p-1 md:p-2 rounded border transition-all hover:scale-[1.02] ${
+                              isDay 
+                                ? 'bg-white/40 border-amber-300 hover:bg-amber-50 hover:border-amber-400' 
+                                : 'bg-white/5 border-white/30 hover:bg-white/10 hover:border-blue-400'
+                            }`}
+                          >
+                            <Download className={`w-2 h-2 md:w-4 md:h-4 flex-shrink-0 ${
+                              isDay ? 'text-amber-600' : 'text-blue-400'
+                            }`} />
+                            <span className={`text-[7px] md:text-[10px] font-medium text-center leading-tight ${
+                              isDay ? 'text-slate-700' : 'text-slate-300'
+                            }`}>
+                              Manual
+                            </span>
+                          </a>
+                        )}
                       </div>
                     </div>
                   )}
@@ -552,7 +573,7 @@ export default function ProductDetailPage() {
                   <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-1 md:gap-3">
                     {/* Stock Status */}
                     <div className="flex items-center gap-1 md:gap-2">
-                      {product.in_stock ? (
+                      {product.inStock ? (
                         <>
                           <CheckCircle className="w-2.5 h-2.5 md:w-6 md:h-6 text-green-500" />
                           <div className="min-w-0">
@@ -685,7 +706,7 @@ export default function ProductDetailPage() {
                         <span className={`text-xs md:text-base ${
                           isDay ? 'text-slate-700' : 'text-slate-300'
                         }`}>
-                          {feature.feature_text}
+                          {feature}
                         </span>
                       </div>
                     ))}
@@ -713,7 +734,7 @@ export default function ProductDetailPage() {
                           <span className={`text-xs md:text-base font-medium text-center md:text-left ${
                             isDay ? 'text-slate-700' : 'text-slate-300'
                           }`}>
-                            {cert.certification_name}
+                            {cert}
                           </span>
                         </div>
                       </div>
@@ -737,17 +758,17 @@ export default function ProductDetailPage() {
                     : 'bg-white/10 border-white/20'
                 }`}>
                   <div className="grid md:grid-cols-2 gap-3 md:gap-6">
-                    {product.specifications?.map((spec, index) => (
+                    {product.specifications && Object.entries(product.specifications).map(([key, value], index) => (
                       <div key={index} className="flex justify-between py-1.5 md:py-3 border-b border-gray-200/20 last:border-b-0">
                         <span className={`text-xs md:text-base font-medium ${
                           isDay ? 'text-slate-700' : 'text-slate-300'
                         }`}>
-                          {spec.spec_key}
+                          {key}
                         </span>
                         <span className={`text-xs md:text-base ${
                           isDay ? 'text-slate-600' : 'text-slate-400'
                         }`}>
-                          {spec.spec_value} {spec.spec_unit && spec.spec_unit}
+                          {value}
                         </span>
                       </div>
                     ))}
@@ -766,7 +787,7 @@ export default function ProductDetailPage() {
                 </h2>
                 
                 {/* YouTube Video Section */}
-                {product.videos && product.videos.length > 0 && product.videos[0].youtube_url && (
+                {product.media?.youtubeVideoUrl && (
                   <div className="space-y-4">
                     <h3 className={`text-base md:text-lg font-semibold ${
                       isDay ? 'text-slate-800' : 'text-white'
@@ -783,8 +804,8 @@ export default function ProductDetailPage() {
                       }`}>
                         <div className="aspect-video rounded-lg overflow-hidden mb-3">
                           <iframe
-                            src={`https://www.youtube.com/embed/${getYouTubeVideoId(product.videos[0].youtube_url)}?rel=0&modestbranding=1`}
-                            title={product.videos[0].title}
+                            src={`https://www.youtube.com/embed/${getYouTubeVideoId(product.media.youtubeVideoUrl)}?rel=0&modestbranding=1`}
+                            title={product.media.videoTitle || product.title}
                             className="w-full h-full"
                             allowFullScreen
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -794,12 +815,12 @@ export default function ProductDetailPage() {
                           <h4 className={`text-sm font-semibold ${
                             isDay ? 'text-slate-800' : 'text-white'
                           }`}>
-                            {product.videos[0].title}
+                            {product.media.videoTitle || product.title}
                           </h4>
                           <p className={`text-xs ${
                             isDay ? 'text-slate-600' : 'text-slate-300'
                           }`}>
-                            {product.videos[0].description}
+                            {product.media.videoDescription || ''}
                           </p>
                         </div>
                       </div>
@@ -816,8 +837,8 @@ export default function ProductDetailPage() {
                           <div className="lg:col-span-2">
                             <div className="aspect-video rounded-lg overflow-hidden">
                               <iframe
-                                src={`https://www.youtube.com/embed/${getYouTubeVideoId(product.videos[0].youtube_url)}?rel=0&modestbranding=1`}
-                                title={product.videos[0].title}
+                                src={`https://www.youtube.com/embed/${getYouTubeVideoId(product.media.youtubeVideoUrl)}?rel=0&modestbranding=1`}
+                                title={product.media.videoTitle || product.title}
                                 className="w-full h-full"
                                 allowFullScreen
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -838,16 +859,16 @@ export default function ProductDetailPage() {
                             <h5 className={`text-base font-medium ${
                               isDay ? 'text-slate-700' : 'text-slate-200'
                             }`}>
-                              {product.videos[0].title}
+                              {product.media.videoTitle || product.title}
                             </h5>
                             <p className={`text-sm ${
                               isDay ? 'text-slate-600' : 'text-slate-300'
                             }`}>
-                              {product.videos[0].description}
+                              {product.media.videoDescription || ''}
                             </p>
                             <div className="flex gap-3 pt-4">
                               <a
-                                href={product.videos[0].youtube_url}
+                                href={product.media.youtubeVideoUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
@@ -880,7 +901,7 @@ export default function ProductDetailPage() {
                         isDay ? 'border-amber-200' : 'border-white/20'
                       }`}>
                         <img
-                          src={image.image_url}
+                          src={image}
                           alt={`${product.title} - Image ${index + 1}`}
                           className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                         />
@@ -903,9 +924,9 @@ export default function ProductDetailPage() {
                 {/* Mobile View - Compact Document List */}
                 <div className="block md:hidden space-y-3">
                   {/* Primary Documents */}
-                  {product.documents?.find(doc => doc.document_type === 'datasheet') && (
+                  {product.technicalDocs?.datasheet && (
                     <a
-                      href={product.documents.find(doc => doc.document_type === 'datasheet')?.file_url}
+                      href={product.technicalDocs.datasheet}
                       className={`flex items-center gap-3 p-3 rounded-lg backdrop-blur-sm border transition-all duration-300 ${
                         isDay 
                           ? 'bg-white/60 border-amber-200 hover:bg-white/80' 
@@ -933,9 +954,9 @@ export default function ProductDetailPage() {
                     </a>
                   )}
                   
-                  {product.documents?.find(doc => doc.document_type === 'manual') && (
+                  {product.technicalDocs?.manual && (
                     <a
-                      href={product.documents.find(doc => doc.document_type === 'manual')?.file_url}
+                      href={product.technicalDocs.manual}
                       className={`flex items-center gap-3 p-3 rounded-lg backdrop-blur-sm border transition-all duration-300 ${
                         isDay 
                           ? 'bg-white/60 border-amber-200 hover:bg-white/80' 
@@ -963,9 +984,9 @@ export default function ProductDetailPage() {
                     </a>
                   )}
                   
-                  {product.documents?.find(doc => doc.document_type === 'certification') && (
+                  {product.technicalDocs?.certifications && (
                     <a
-                      href={product.documents.find(doc => doc.document_type === 'certification')?.file_url}
+                      href={product.technicalDocs.certifications}
                       className={`flex items-center gap-3 p-3 rounded-lg backdrop-blur-sm border transition-all duration-300 ${
                         isDay 
                           ? 'bg-white/60 border-amber-200 hover:bg-white/80' 
@@ -994,10 +1015,10 @@ export default function ProductDetailPage() {
                   )}
                   
                   {/* Additional Documents */}
-                  {product.documents?.filter(doc => !['datasheet', 'manual', 'certification'].includes(doc.document_type)).map((doc, index) => (
+                  {product.technicalDocs?.additionalDocs?.map((doc, index) => (
                     <a
                       key={index}
-                      href={doc.file_url}
+                      href={doc.url}
                       className={`flex items-center gap-3 p-3 rounded-lg backdrop-blur-sm border transition-all duration-300 ${
                         isDay 
                           ? 'bg-white/60 border-amber-200 hover:bg-white/80' 
@@ -1016,7 +1037,7 @@ export default function ProductDetailPage() {
                         <p className={`text-xs ${
                           isDay ? 'text-slate-600' : 'text-slate-300'
                         }`}>
-                          {doc.document_type.toUpperCase()} Document
+                          {doc.type.toUpperCase()} Document
                         </p>
                       </div>
                       <ExternalLink className={`w-4 h-4 ${
@@ -1029,9 +1050,9 @@ export default function ProductDetailPage() {
                 {/* Desktop View - Grid Layout */}
                 <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {/* Primary Documents */}
-                  {product.documents?.find(doc => doc.document_type === 'datasheet') && (
+                  {product.technicalDocs?.datasheet && (
                     <a
-                      href={product.documents.find(doc => doc.document_type === 'datasheet')?.file_url}
+                      href={product.technicalDocs.datasheet}
                       className={`p-6 rounded-xl backdrop-blur-sm border transition-all duration-300 group ${
                         isDay 
                           ? 'bg-white/60 border-amber-200 hover:bg-white/80 hover:shadow-lg' 
@@ -1059,9 +1080,9 @@ export default function ProductDetailPage() {
                     </a>
                   )}
                   
-                  {product.documents?.find(doc => doc.document_type === 'manual') && (
+                  {product.technicalDocs?.manual && (
                     <a
-                      href={product.documents.find(doc => doc.document_type === 'manual')?.file_url}
+                      href={product.technicalDocs.manual}
                       className={`p-6 rounded-xl backdrop-blur-sm border transition-all duration-300 group ${
                         isDay 
                           ? 'bg-white/60 border-amber-200 hover:bg-white/80 hover:shadow-lg' 
@@ -1089,9 +1110,9 @@ export default function ProductDetailPage() {
                     </a>
                   )}
                   
-                  {product.documents?.find(doc => doc.document_type === 'certification') && (
+                  {product.technicalDocs?.certifications && (
                     <a
-                      href={product.documents.find(doc => doc.document_type === 'certification')?.file_url}
+                      href={product.technicalDocs.certifications}
                       className={`p-6 rounded-xl backdrop-blur-sm border transition-all duration-300 group ${
                         isDay 
                           ? 'bg-white/60 border-amber-200 hover:bg-white/80 hover:shadow-lg' 
@@ -1120,10 +1141,10 @@ export default function ProductDetailPage() {
                   )}
                   
                   {/* Additional Documents */}
-                  {product.documents?.filter(doc => !['datasheet', 'manual', 'certification'].includes(doc.document_type)).map((doc, index) => (
+                  {product.technicalDocs?.additionalDocs?.map((doc, index) => (
                     <a
                       key={index}
-                      href={doc.file_url}
+                      href={doc.url}
                       className={`p-6 rounded-xl backdrop-blur-sm border transition-all duration-300 group ${
                         isDay 
                           ? 'bg-white/60 border-amber-200 hover:bg-white/80 hover:shadow-lg' 
@@ -1146,7 +1167,7 @@ export default function ProductDetailPage() {
                       <p className={`text-sm ${
                         isDay ? 'text-slate-600' : 'text-slate-300'
                       }`}>
-                        {doc.document_type.toUpperCase()} Document
+                        {doc.type.toUpperCase()} Document
                       </p>
                     </a>
                   ))}
@@ -1176,7 +1197,7 @@ export default function ProductDetailPage() {
                         <span className={`text-xs md:text-base font-medium ${
                           isDay ? 'text-slate-700' : 'text-slate-300'
                         }`}>
-                          {application.application_name}
+                          {application}
                         </span>
                       </div>
                     </div>
@@ -1326,9 +1347,9 @@ export default function ProductDetailPage() {
                   Technical Documents
                 </h2>
                 <div className="grid md:grid-cols-3 gap-4 md:gap-6">
-                  {product.documents?.find(doc => doc.document_type === 'datasheet') && (
+                  {product.technicalDocs?.datasheet && (
                     <a
-                      href={product.documents.find(doc => doc.document_type === 'datasheet')?.file_url}
+                      href={product.technicalDocs.datasheet}
                       className={`p-4 md:p-6 rounded-lg md:rounded-xl backdrop-blur-sm border transition-all duration-300 ${
                         isDay 
                           ? 'bg-white/60 border-amber-200 hover:bg-white/80' 
@@ -1350,9 +1371,9 @@ export default function ProductDetailPage() {
                       </p>
                     </a>
                   )}
-                  {product.documents?.find(doc => doc.document_type === 'manual') && (
+                  {product.technicalDocs?.manual && (
                     <a
-                      href={product.documents.find(doc => doc.document_type === 'manual')?.file_url}
+                      href={product.technicalDocs.manual}
                       className={`p-4 md:p-6 rounded-lg md:rounded-xl backdrop-blur-sm border transition-all duration-300 ${
                         isDay 
                           ? 'bg-white/60 border-amber-200 hover:bg-white/80' 
@@ -1374,9 +1395,9 @@ export default function ProductDetailPage() {
                       </p>
                     </a>
                   )}
-                  {product.documents?.find(doc => doc.document_type === 'certification') && (
+                  {product.technicalDocs?.certifications && (
                     <a
-                      href={product.documents.find(doc => doc.document_type === 'certification')?.file_url}
+                      href={product.technicalDocs.certifications}
                       className={`p-4 md:p-6 rounded-lg md:rounded-xl backdrop-blur-sm border transition-all duration-300 ${
                         isDay 
                           ? 'bg-white/60 border-amber-200 hover:bg-white/80' 
@@ -1426,7 +1447,7 @@ export default function ProductDetailPage() {
                   >
                     <div className="h-16 md:h-32 bg-gray-100 rounded md:rounded-lg mb-1 md:mb-4 overflow-hidden">
                       <img
-                        src={relatedProduct.images?.[0]?.image_url || ''}
+                        src={relatedProduct.images?.[0] || ''}
                         alt={relatedProduct.title}
                         className="w-full h-full object-cover"
                       />
@@ -1452,7 +1473,7 @@ export default function ProductDetailPage() {
                       <span className={`text-[8px] md:text-sm ${
                         isDay ? 'text-slate-500' : 'text-slate-400'
                       }`}>
-                        ({relatedProduct.review_count})
+                        ({relatedProduct.reviews})
                       </span>
                     </div>
                     <div className={`text-[10px] md:text-base font-bold ${
@@ -1523,7 +1544,7 @@ export default function ProductDetailPage() {
               {/* Main Selected Image */}
               <div className="mb-3 sm:mb-4">
                 <img
-                  src={product.images?.[selectedImage]?.image_url || ''}
+                  src={product.images?.[selectedImage] || ''}
                   alt={`${product.title} ${selectedImage + 1}`}
                   className="w-full max-h-64 sm:max-h-96 object-contain rounded-lg"
                 />
@@ -1542,7 +1563,7 @@ export default function ProductDetailPage() {
                     }`}
                   >
                     <img
-                      src={image.image_url}
+                      src={image}
                       alt={`${product.title} ${index + 1}`}
                       className="w-full h-full object-cover"
                     />
@@ -1551,14 +1572,14 @@ export default function ProductDetailPage() {
               </div>
               
               {/* Video Section if available */}
-              {product.videos && product.videos.length > 0 && product.videos[0].youtube_url && (
+              {product.media?.youtubeVideoUrl && (
                 <div className="mt-3 sm:mt-4 border-t pt-3 sm:pt-4">
                   <h4 className="text-sm sm:text-md font-semibold text-gray-900 mb-2">Product Video</h4>
                   <div className="aspect-video max-w-sm sm:max-w-md">
                     <iframe
                       width="100%"
                       height="100%"
-                      src={`https://www.youtube.com/embed/${getYouTubeVideoId(product.videos[0].youtube_url)}`}
+                      src={`https://www.youtube.com/embed/${getYouTubeVideoId(product.media.youtubeVideoUrl)}`}
                       frameBorder="0"
                       allowFullScreen
                       className="rounded-lg"

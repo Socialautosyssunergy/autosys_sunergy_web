@@ -59,7 +59,7 @@ export interface ProductCategory {
   icon: React.ComponentType<{ className?: string }> | null;
   description: string;
   features: string[];
-  mainProducts: string[];
+  mainProducts: Product[]; // Changed from string[] to Product[]
   totalProducts: number;
 }
 

@@ -1,21 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getProductById } from '@/data/products';
 
 interface RouteParams {
   params: Promise<{
     id: string;
   }>;
 }
-
-// Dynamic import to avoid build-time issues
-const getProductByIdFunction = async (id: string) => {
-  try {
-    const { getProductById } = await import('@/utils/supabaseUtils');
-    return await getProductById(id);
-  } catch (error) {
-    console.error('Error loading product function:', error);
-    return null;
-  }
-};
 
 export async function GET(
   request: NextRequest,
@@ -31,7 +21,7 @@ export async function GET(
       );
     }
     
-    const product = await getProductByIdFunction(id);
+    const product = getProductById(id);
     
     if (!product) {
       return NextResponse.json(

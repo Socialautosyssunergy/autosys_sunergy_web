@@ -1,6 +1,6 @@
+// Product types - All products managed via Supabase (no Sanity integration)
 export interface Product {
   id: string;
-  sanity_id?: string;
   title: string;
   slug: string;
   short_description?: string;
@@ -44,7 +44,6 @@ export interface Product {
 
 export interface ProductCategory {
   id: string;
-  sanity_id?: string;
   name: string;
   slug: string;
   description?: string;
@@ -59,7 +58,6 @@ export interface ProductCategory {
 
 export interface ProductBrand {
   id: string;
-  sanity_id?: string;
   name: string;
   slug: string;
   logo_url?: string;
@@ -145,7 +143,6 @@ export interface ProductApplication {
 
 export interface ProductReview {
   id: string;
-  sanity_id?: string;
   product_id: string;
   customer_name: string;
   company_name?: string;

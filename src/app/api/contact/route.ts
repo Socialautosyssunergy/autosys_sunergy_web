@@ -6,6 +6,10 @@ import {
   validateContactData,
   type ContactFormData 
 } from '@/utils/emailService';
+import { 
+  sendResendTeamNotification,
+  sendResendCustomerReply 
+} from '@/utils/resendService';
 import { rateLimit } from '@/utils/rateLimit';
 
 // Rate limiting: 5 requests per 15 minutes per IP
@@ -103,20 +107,28 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // STEP 2: Send notification email to team (non-blocking - don't fail if this fails)
+    // STEP 2: Send notification emails to team
+    // Try Resend first (primary provider), fallback to Zoho if Resend fails
     let emailResult: { success: boolean; error?: string; provider?: string; messageId?: string } = { 
       success: false, 
       error: 'Not attempted', 
       provider: 'none' 
     };
+    
     try {
-      console.log('📧 Sending team notification email...');
-      emailResult = await sendNotificationEmail('contact', contactData);
+      console.log('📧 Attempting to send team notification via Resend...');
+      emailResult = await sendResendTeamNotification(contactData);
+      
+      // If Resend fails or is not configured, fallback to Zoho
+      if (!emailResult.success) {
+        console.log('⚠️ Resend failed or not configured, falling back to Zoho SMTP...');
+        emailResult = await sendNotificationEmail('contact', contactData);
+      }
       
       if (emailResult.success) {
         console.log(`✅ Team notification email sent via ${emailResult.provider || 'unknown'}: ${emailResult.messageId || 'no-id'}`);
       } else {
-        console.warn('⚠️ Team notification email failed:', emailResult.error);
+        console.warn('⚠️ Team notification email failed on both providers:', emailResult.error);
       }
     } catch (emailError) {
       console.error('❌ Team email error:', emailError);
@@ -129,15 +141,22 @@ export async function POST(request: NextRequest) {
       error: 'No email provided', 
       provider: 'none' 
     };
+    
     if (contactData.email) {
       try {
-        console.log(`📧 Sending customer reply to: ${contactData.email}`);
-        customerEmailResult = await sendCustomerReplyEmail(contactData.email, contactData);
+        console.log(`📧 Attempting to send customer reply to ${contactData.email} via Resend...`);
+        customerEmailResult = await sendResendCustomerReply(contactData.email, contactData);
+        
+        // If Resend fails or is not configured, fallback to Zoho
+        if (!customerEmailResult.success) {
+          console.log('⚠️ Resend customer email failed, falling back to Zoho SMTP...');
+          customerEmailResult = await sendCustomerReplyEmail(contactData.email, contactData);
+        }
         
         if (customerEmailResult.success) {
           console.log(`✅ Customer reply email sent via ${customerEmailResult.provider || 'unknown'}: ${customerEmailResult.messageId || 'no-id'}`);
         } else {
-          console.warn('⚠️ Customer reply email failed:', customerEmailResult.error);
+          console.warn('⚠️ Customer reply email failed on both providers:', customerEmailResult.error);
         }
       } catch (customerEmailError) {
         console.error('❌ Customer email error:', customerEmailError);

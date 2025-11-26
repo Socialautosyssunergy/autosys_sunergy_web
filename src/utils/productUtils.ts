@@ -1,6 +1,5 @@
-import { urlFor } from '../../sanity/lib/client';
-
-// Image optimization utilities
+// Image optimization utilities for products
+// Note: Sanity is now used ONLY for blog content. Products use Supabase/direct URLs.
 export const optimizeImageUrl = (
   imageUrl: string,
   options: {
@@ -11,27 +10,8 @@ export const optimizeImageUrl = (
     fit?: 'crop' | 'fill' | 'max' | 'min' | 'scale';
   } = {}
 ): string => {
-  // Check if it's a Sanity image
-  if (imageUrl.includes('cdn.sanity.io')) {
-    try {
-      const imageRef = imageUrl.split('/').pop()?.replace(/\.(jpg|jpeg|png|webp)$/i, '');
-      if (imageRef) {
-        let builder = urlFor({ _type: 'image', asset: { _ref: imageRef } });
-        
-        if (options.width) builder = builder.width(options.width);
-        if (options.height) builder = builder.height(options.height);
-        if (options.quality) builder = builder.quality(options.quality);
-        if (options.format) builder = builder.format(options.format);
-        if (options.fit) builder = builder.fit(options.fit as 'clip' | 'crop' | 'fill' | 'fillmax' | 'max' | 'scale' | 'min');
-        
-        return builder.url();
-      }
-    } catch (error) {
-      console.warn('Failed to optimize Sanity image:', error);
-    }
-  }
-  
-  // For non-Sanity images, return as-is or apply basic optimizations
+  // For product images, return URL as-is (no Sanity processing)
+  // You can implement other CDN-based optimizations here if needed
   return imageUrl;
 };
 

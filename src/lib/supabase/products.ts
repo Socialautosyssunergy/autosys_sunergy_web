@@ -1,13 +1,15 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
+const supabase = supabaseUrl && supabaseAnonKey
+  ? createClient(supabaseUrl, supabaseAnonKey)
+  : null;
+
+// Product interfaces - Supabase-based (no Sanity integration)
 export interface Product {
   id: string;
-  sanity_id: string;
   title: string;
   slug: string;
   short_description?: string;
@@ -51,7 +53,6 @@ export interface Product {
 
 export interface ProductCategory {
   id: string;
-  sanity_id?: string;
   name: string;
   slug: string;
   description?: string;
@@ -63,7 +64,6 @@ export interface ProductCategory {
 
 export interface ProductBrand {
   id: string;
-  sanity_id?: string;
   name: string;
   slug: string;
   logo_url?: string;
@@ -149,7 +149,6 @@ export interface ProductApplication {
 
 export interface ProductReview {
   id: string;
-  sanity_id?: string;
   product_id: string;
   customer_name: string;
   company_name?: string;
@@ -176,6 +175,11 @@ export const getProducts = async (options?: {
   sortBy?: 'featured' | 'popular' | 'rating' | 'name' | 'created';
   sortOrder?: 'asc' | 'desc';
 }): Promise<{ data: Product[]; count: number }> => {
+  if (!supabase) {
+    console.warn('Supabase not configured');
+    return { data: [], count: 0 };
+  }
+  
   let query = supabase
     .from('products')
     .select(`
@@ -260,6 +264,11 @@ export const getProducts = async (options?: {
 };
 
 export const getProductBySlug = async (slug: string): Promise<Product | null> => {
+  if (!supabase) {
+    console.warn('Supabase not configured');
+    return null;
+  }
+  
   const { data, error } = await supabase
     .from('products')
     .select(`
@@ -294,6 +303,11 @@ export const getProductBySlug = async (slug: string): Promise<Product | null> =>
 };
 
 export const getProductById = async (id: string): Promise<Product | null> => {
+  if (!supabase) {
+    console.warn('Supabase not configured');
+    return null;
+  }
+  
   const { data, error } = await supabase
     .from('products')
     .select(`
@@ -322,6 +336,11 @@ export const getProductById = async (id: string): Promise<Product | null> => {
 };
 
 export const getRelatedProducts = async (productId: string, categoryId?: string, brandId?: string, limit: number = 4): Promise<Product[]> => {
+  if (!supabase) {
+    console.warn('Supabase not configured');
+    return [];
+  }
+  
   let query = supabase
     .from('products')
     .select(`
@@ -356,6 +375,11 @@ export const getRelatedProducts = async (productId: string, categoryId?: string,
 };
 
 export const getProductCategories = async (): Promise<ProductCategory[]> => {
+  if (!supabase) {
+    console.warn('Supabase not configured');
+    return [];
+  }
+  
   const { data, error } = await supabase
     .from('product_categories')
     .select('*')
@@ -371,6 +395,11 @@ export const getProductCategories = async (): Promise<ProductCategory[]> => {
 };
 
 export const getProductBrands = async (): Promise<ProductBrand[]> => {
+  if (!supabase) {
+    console.warn('Supabase not configured');
+    return [];
+  }
+  
   const { data, error } = await supabase
     .from('product_brands')
     .select('*')
@@ -386,6 +415,11 @@ export const getProductBrands = async (): Promise<ProductBrand[]> => {
 };
 
 export const getProductReviews = async (productId?: string, featured?: boolean, limit?: number): Promise<ProductReview[]> => {
+  if (!supabase) {
+    console.warn('Supabase not configured');
+    return [];
+  }
+  
   let query = supabase
     .from('product_reviews')
     .select('*')
@@ -417,6 +451,16 @@ export const getProductReviews = async (productId?: string, featured?: boolean, 
 };
 
 export const getProductStats = async () => {
+  if (!supabase) {
+    console.warn('Supabase not configured');
+    return {
+      totalProducts: 0,
+      categories: 0,
+      brands: 0,
+      avgRating: 0
+    };
+  }
+  
   const [productsResult, categoriesResult, brandsResult] = await Promise.all([
     supabase.from('products').select('rating', { count: 'exact' }).eq('status', 'published'),
     supabase.from('product_categories').select('id', { count: 'exact' }).eq('is_active', true),
