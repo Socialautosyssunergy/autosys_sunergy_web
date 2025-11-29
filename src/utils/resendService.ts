@@ -2,7 +2,9 @@ import { Resend } from 'resend';
 import type { ContactFormData } from './emailService';
 
 // Initialize Resend with API key from environment
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Initialize Resend with API key from environment, or a dummy key for build time
+const resendApiKey = process.env.RESEND_API_KEY || 're_123456789';
+const resend = new Resend(resendApiKey);
 
 // Configuration
 const RESEND_CONFIG = {
