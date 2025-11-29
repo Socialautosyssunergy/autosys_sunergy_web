@@ -172,7 +172,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="antialiased overflow-x-hidden pb-16 md:pb-0">
+      <body className="antialiased overflow-x-hidden pb-16 md:pb-0" suppressHydrationWarning>
         {/* Midgrow Studio - Performance Optimization */}
         {MIDGROW_HTML_COMMENTS.performance && (
           <script dangerouslySetInnerHTML={{ __html: `/*${MIDGROW_HTML_COMMENTS.performance}*/` }} />
